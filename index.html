@@ -292,6 +292,62 @@ a { color: inherit; }
 .section-nav-card-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; color: var(--navy); line-height: 1.2; }
 .block { margin-bottom: 6px; }
 
+/* CTA block */
+a.cta-block {
+  display: flex; align-items: center; gap: 16px;
+  background: linear-gradient(120deg, var(--navy) 0%, var(--navy-dark) 60%, #24457f 100%);
+  color: white; text-decoration: none; border-radius: var(--radius-xl);
+  padding: 18px 22px; margin-bottom: 24px; position: relative; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.cta-block::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120px 120px at 90% 0%, rgba(232,119,34,0.35), transparent 70%);
+}
+.cta-block:hover { transform: translateY(-2px); box-shadow: var(--shadow-xl); }
+.cta-icon {
+  flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--orange-light), var(--orange));
+  display: flex; align-items: center; justify-content: center; color: white;
+  position: relative; z-index: 1;
+}
+.cta-text { flex: 1; min-width: 0; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 3px; }
+.cta-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 17px; letter-spacing: -0.1px; line-height: 1.25; }
+.cta-sub { font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; }
+.prose a.cta-block[target="_blank"]::after { content: none; }
+.cta-arrow {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center; color: white; position: relative; z-index: 1;
+  transition: transform .2s var(--ease), background .2s var(--ease);
+}
+.cta-block:hover .cta-arrow { transform: translateX(3px); background: rgba(255,255,255,0.22); }
+
+/* Person / contact group */
+.person-group { margin-bottom: 28px; }
+.person-group-heading { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 16.5px; color: var(--navy); margin-bottom: 12px; }
+.person-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.person-card {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg);
+  padding: 14px 16px; box-shadow: var(--shadow);
+  transition: box-shadow .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease);
+}
+.person-card:hover { box-shadow: var(--shadow-lg); border-color: var(--gray-300); transform: translateY(-2px); }
+.person-avatar {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--navy), var(--navy-dark)); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.3px;
+}
+.person-info { min-width: 0; flex: 1; }
+.person-name { font-weight: 700; font-size: 14.5px; color: var(--navy); line-height: 1.3; }
+.person-role { font-size: 12.5px; color: var(--gray-600); margin-top: 1px; }
+.person-contact { margin-top: 7px; display: flex; flex-direction: column; gap: 3px; }
+.person-contact a { font-size: 12.5px; color: var(--gray-700); text-decoration: none; display: flex; align-items: center; gap: 5px; }
+.person-contact a:hover { color: var(--orange); text-decoration: underline; text-decoration-color: rgba(232,119,34,0.4); }
+.person-contact svg { flex-shrink: 0; color: var(--gray-500); }
+
 /* Hero / intro block */
 .hero-block {
   background: linear-gradient(135deg, #fff8f2, #fff);
@@ -538,6 +594,11 @@ const ICONS = {
 const IMG_ICON = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
 const CHEV = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>';
 const PLUS = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+const CHAT_ICON = '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>';
+const LINK_ICON = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.07 0l2.83-2.83a5 5 0 00-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 00-7.07 0L4.1 13.83a5 5 0 007.07 7.07l1.5-1.5"/></svg>';
+const ARROW_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+const PHONE_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>';
+const MAIL_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>';
 
 let DATA = null;
 let ORDERED_PAGES = [];
@@ -552,6 +613,11 @@ function flattenText(page) {
     if (b.type === 'hero') parts.push(b.headline, (b.description||'').replace(/<[^>]+>/g,' '));
     if (b.type === 'spec') parts.push(b.title||'', b.rows.map(r=>r.join(' ')).join(' '));
     if (b.type === 'faq') parts.push(b.q, b.a.replace(/<[^>]+>/g,' '));
+    if (b.type === 'cta') parts.push(b.label||'');
+    if (b.type === 'person-group') {
+      parts.push(b.heading||'');
+      (b.people||[]).forEach(p => parts.push(p.name||'', p.role||''));
+    }
   });
   return parts.join(' ').toLowerCase();
 }
@@ -589,6 +655,29 @@ function escapeHtml(s) {
   return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
+function initials(name) {
+  const parts = (name || '').trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return '?';
+  const first = parts[0][0] || '';
+  const last = parts.length > 1 ? (parts[parts.length - 1][0] || '') : '';
+  return (first + last).toUpperCase();
+}
+
+function renderPersonCard(p) {
+  const tel = (p.phone || '').replace(/[^\d+]/g, '');
+  return `<div class="person-card">
+    <div class="person-avatar" aria-hidden="true">${escapeHtml(initials(p.name))}</div>
+    <div class="person-info">
+      <div class="person-name">${escapeHtml(p.name)}</div>
+      ${p.role ? `<div class="person-role">${escapeHtml(p.role)}</div>` : ''}
+      <div class="person-contact">
+        ${p.phone ? `<a href="tel:${escapeHtml(tel)}">${PHONE_ICON}${escapeHtml(p.phone.trim())}</a>` : ''}
+        ${p.email ? `<a href="mailto:${escapeHtml(p.email)}">${MAIL_ICON}${escapeHtml(p.email)}</a>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
 function renderBlock(b) {
   if (b.type === 'hero') {
     return `<div class="hero-block">
@@ -617,6 +706,26 @@ function renderBlock(b) {
             <span class="section-nav-card-title">${escapeHtml(it.label)}</span>
           </a>
         `).join('')}
+      </div>
+    </div>`;
+  }
+  if (b.type === 'cta') {
+    const isChat = /teams\.microsoft\.com/i.test(b.url || '');
+    const attrs = b.external ? 'target="_blank" rel="noopener"' : '';
+    return `<a class="cta-block" href="${escapeHtml(b.url)}" ${attrs}>
+      <span class="cta-icon">${isChat ? CHAT_ICON : LINK_ICON}</span>
+      <span class="cta-text">
+        <span class="cta-label">${escapeHtml(b.label)}</span>
+        ${isChat ? '<span class="cta-sub">Åbner i Teams</span>' : ''}
+      </span>
+      <span class="cta-arrow">${ARROW_ICON}</span>
+    </a>`;
+  }
+  if (b.type === 'person-group') {
+    return `<div class="person-group">
+      ${b.heading ? `<div class="person-group-heading">${escapeHtml(b.heading)}</div>` : ''}
+      <div class="person-grid">
+        ${b.people.map(renderPersonCard).join('')}
       </div>
     </div>`;
   }
