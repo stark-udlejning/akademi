@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STARK Udlejning Akademiet</title>
+<meta name="description" content="STARK Udlejning Akademiet — alt hvad du skal vide om udstyr, sikkerhed, systemer og forretningsforståelse, samlet ét sted.">
+<link rel="icon" href="https://stark-udlejning.netlify.app/top_logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #E87722;
+  --orange-light: #f59340;
+  --navy: #1B3A6B;
+  --navy-dark: #132d54;
+  --navy-deeper: #0d1f3c;
+  --white: #ffffff;
+  --gray-50: #f8f9fa;
+  --gray-100: #f1f3f5;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #868e96;
+  --gray-700: #495057;
+  --gray-900: #212529;
+  --radius: 6px;
+  --radius-lg: 12px;
+  --shadow: 0 2px 12px rgba(27,58,107,0.10);
+  --shadow-lg: 0 8px 32px rgba(27,58,107,0.18);
+  --header-h: 64px;
+  --sidebar-w: 296px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--gray-50);
+  color: var(--gray-900);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+/* ───────── HEADER ───────── */
+.app-header {
+  position: sticky; top: 0; z-index: 200;
+  height: var(--header-h);
+  background: var(--navy);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.20);
+  display: flex; align-items: center;
+  padding: 0 20px;
+  gap: 14px;
+}
+.burger {
+  display: none;
+  width: 38px; height: 38px; border-radius: var(--radius);
+  border: none; background: rgba(255,255,255,0.08); color: white;
+  align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+}
+.burger:hover { background: rgba(255,255,255,0.16); }
+.brand { display: flex; align-items: center; gap: 14px; text-decoration: none; flex-shrink: 0; }
+.brand img { height: 34px; display: block; }
+.brand-div { width: 1px; height: 28px; background: rgba(255,255,255,0.2); }
+.brand-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 19px; color: white; letter-spacing: 0.2px; line-height: 1.1; }
+.brand-sub { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: rgba(255,255,255,0.45); }
+
+.header-search { flex: 1; max-width: 460px; margin-left: auto; position: relative; }
+.header-search input {
+  width: 100%; padding: 9px 14px 9px 38px; border-radius: 100px; border: none;
+  background: rgba(255,255,255,0.10); color: white; font-family: 'Barlow', sans-serif; font-size: 14px;
+  outline: none; transition: background .15s;
+}
+.header-search input::placeholder { color: rgba(255,255,255,0.45); }
+.header-search input:focus { background: rgba(255,255,255,0.18); }
+.header-search svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.45); pointer-events: none; }
+.search-results {
+  position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+  background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+  max-height: 70vh; overflow-y: auto; display: none; z-index: 300;
+}
+.search-results.open { display: block; }
+.sr-item { display: block; padding: 12px 16px; text-decoration: none; border-bottom: 1px solid var(--gray-100); cursor: pointer; }
+.sr-item:last-child { border-bottom: none; }
+.sr-item:hover, .sr-item.active { background: #fff8f3; }
+.sr-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--orange); margin-bottom: 2px; }
+.sr-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; color: var(--navy); }
+.sr-snippet { font-size: 12px; color: var(--gray-600); margin-top: 2px; line-height: 1.4; }
+.sr-snippet mark { background: #ffe3c2; color: var(--navy); border-radius: 2px; }
+.sr-empty { padding: 24px; text-align: center; color: var(--gray-500); font-size: 13px; }
+
+/* ───────── LAYOUT ───────── */
+.layout { display: flex; align-items: flex-start; min-height: calc(100vh - var(--header-h)); }
+
+.sidebar {
+  width: var(--sidebar-w); flex-shrink: 0;
+  position: sticky; top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  background: white; border-right: 1px solid var(--gray-200);
+  padding: 18px 12px 40px;
+}
+.sidebar::-webkit-scrollbar { width: 8px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 8px; }
+
+.nav-home-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: var(--radius); text-decoration: none;
+  color: var(--navy); font-weight: 700; font-size: 14px; margin-bottom: 14px;
+}
+.nav-home-link:hover { background: var(--gray-100); }
+.nav-home-link svg { flex-shrink: 0; }
+
+.nav-group { margin-bottom: 4px; }
+.nav-group-btn {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: var(--radius); border: none; background: none;
+  cursor: pointer; text-align: left; font-family: 'Barlow', sans-serif;
+}
+.nav-group-btn:hover { background: var(--gray-100); }
+.nav-group-icon {
+  width: 30px; height: 30px; border-radius: 8px; background: var(--gray-100);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--navy);
+  transition: background .15s, color .15s;
+}
+.nav-group.open .nav-group-icon, .nav-group.has-active .nav-group-icon { background: var(--navy); color: white; }
+.nav-group-label { flex: 1; font-weight: 700; font-size: 13.5px; color: var(--gray-900); }
+.nav-group-chev { color: var(--gray-500); transition: transform .18s; flex-shrink: 0; }
+.nav-group.open .nav-group-chev { transform: rotate(90deg); }
+
+.nav-pages { list-style: none; overflow: hidden; max-height: 0; transition: max-height .22s ease; }
+.nav-group.open .nav-pages { max-height: 600px; }
+.nav-pages li { margin: 1px 0; }
+.nav-page-link {
+  display: block; text-decoration: none; font-size: 13.5px; color: var(--gray-700);
+  padding: 8px 12px 8px 52px; border-radius: var(--radius); border-left: 3px solid transparent;
+  transition: background .12s, color .12s;
+}
+.nav-page-link:hover { background: var(--gray-100); color: var(--navy); }
+.nav-page-link.active { background: #fff2e6; color: var(--orange); font-weight: 700; border-left-color: var(--orange); }
+
+.sidebar-overlay { display: none; }
+
+/* ───────── MAIN CONTENT ───────── */
+.main { flex: 1; min-width: 0; }
+
+/* Cover / home hero */
+.cover {
+  background: linear-gradient(155deg, var(--navy-deeper) 0%, var(--navy) 55%, #2850a0 100%);
+  position: relative; overflow: hidden;
+  padding: 64px 40px 56px;
+}
+.cover::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 41px);
+}
+.cover-inner { position: relative; z-index: 1; max-width: 900px; }
+.cover-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(232,119,34,0.15); border: 1px solid rgba(232,119,34,0.35);
+  color: var(--orange-light); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+  padding: 7px 14px; border-radius: 100px; margin-bottom: 26px;
+}
+.cover-badge-dot { width: 7px; height: 7px; background: var(--orange); border-radius: 50%; }
+.cover h1 {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+  font-size: clamp(38px, 6vw, 68px); line-height: 0.96; letter-spacing: -0.5px;
+  color: white; margin-bottom: 18px;
+}
+.cover h1 span { color: var(--orange); }
+.cover p.lead { font-size: 17px; color: rgba(255,255,255,0.65); max-width: 640px; line-height: 1.6; }
+
+.cat-grid {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px; max-width: 1100px; margin-top: 36px;
+}
+.cat-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg); padding: 20px; text-decoration: none;
+  display: flex; flex-direction: column; gap: 10px; transition: background .15s, transform .15s, border-color .15s;
+}
+.cat-card:hover { background: rgba(255,255,255,0.11); border-color: rgba(232,119,34,0.45); transform: translateY(-2px); }
+.cat-card-icon {
+  width: 40px; height: 40px; border-radius: 10px; background: rgba(232,119,34,0.18);
+  display: flex; align-items: center; justify-content: center; color: var(--orange-light);
+}
+.cat-card-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 19px; color: white; }
+.cat-card-count { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 600; }
+
+.content-wrap { max-width: 900px; margin: 0 auto; padding: 40px 40px 100px; }
+
+/* Page header */
+.page-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--orange); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.page-eyebrow a { text-decoration: none; color: var(--orange); }
+.page-eyebrow a:hover { text-decoration: underline; }
+.page-title {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(30px, 4.5vw, 44px);
+  color: var(--navy); line-height: 1.05; margin-bottom: 28px; letter-spacing: -0.3px;
+}
+
+/* Prose */
+.prose { font-size: 15.5px; line-height: 1.75; color: var(--gray-900); }
+.prose h2 {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; color: var(--navy);
+  margin: 38px 0 14px; letter-spacing: -0.2px; padding-bottom: 8px; border-bottom: 2px solid var(--gray-200);
+}
+.prose h2:first-child { margin-top: 0; }
+.prose h3 {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 19px; color: var(--navy);
+  margin: 26px 0 10px;
+}
+.prose h4 { font-weight: 700; font-size: 15.5px; color: var(--navy); margin: 18px 0 8px; }
+.prose p { margin: 0 0 14px; }
+.prose ul, .prose ol { margin: 0 0 16px; padding-left: 22px; }
+.prose li { margin-bottom: 6px; }
+.prose li::marker { color: var(--orange); font-weight: 700; }
+.prose strong { color: var(--navy); font-weight: 700; }
+.prose a { color: var(--orange); font-weight: 600; text-decoration: underline; text-decoration-color: rgba(232,119,34,0.35); text-underline-offset: 2px; }
+.prose a:hover { text-decoration-color: var(--orange); }
+.prose a[target="_blank"]::after {
+  content: ''; display: inline-block; width: 11px; height: 11px; margin-left: 3px; margin-bottom: -1px;
+  background: currentColor;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5'%3E%3Cpath d='M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5'%3E%3Cpath d='M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain; mask-size: contain; opacity: 0.55;
+}
+
+/* Section-nav ("Udforsk emnet") */
+.section-nav { margin-bottom: 32px; }
+.section-nav-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--gray-500); margin-bottom: 12px; }
+.section-nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.section-nav-card {
+  display: flex; align-items: center; gap: 12px;
+  background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg);
+  padding: 14px 16px; text-decoration: none; box-shadow: var(--shadow);
+  transition: box-shadow .15s, border-color .15s, transform .15s;
+}
+.section-nav-card:hover { box-shadow: var(--shadow-lg); border-color: var(--orange-light); transform: translateY(-1px); }
+.section-nav-card-icon {
+  width: 34px; height: 34px; border-radius: 9px; background: #fff2e6; color: var(--orange);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.section-nav-card-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; color: var(--navy); line-height: 1.2; }
+.block { margin-bottom: 6px; }
+
+/* Hero / intro block */
+.hero-block {
+  background: linear-gradient(135deg, #fff8f2, #fff);
+  border: 1px solid #ffe3c2; border-left: 4px solid var(--orange);
+  border-radius: var(--radius-lg); padding: 22px 26px; margin-bottom: 28px;
+}
+.hero-block .hh { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; color: var(--navy); margin-bottom: 6px; }
+.hero-block .hd { font-size: 14.5px; color: var(--gray-700); line-height: 1.65; }
+.hero-block .hd p { margin-bottom: 8px; }
+.hero-block .hd p:last-child { margin-bottom: 0; }
+
+/* Spec card */
+.spec-card { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; border: 1px solid var(--gray-200); }
+.spec-card-title { background: var(--navy); color: white; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; padding: 13px 18px; letter-spacing: 0.2px; }
+.spec-rows { display: grid; grid-template-columns: 1fr 1fr; }
+.spec-row { display: flex; justify-content: space-between; gap: 10px; padding: 10px 18px; border-bottom: 1px solid var(--gray-100); font-size: 13.5px; }
+.spec-row:nth-last-child(-n+2) { border-bottom: none; }
+.spec-k { color: var(--gray-600); }
+.spec-v { color: var(--gray-900); font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 620px) { .spec-rows { grid-template-columns: 1fr; } .spec-row:nth-last-child(-n+2) { border-bottom: 1px solid var(--gray-100); } .spec-row:last-child { border-bottom: none; } }
+
+/* Image / diagram card */
+.diagram-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; }
+.diagram-card img { display: block; width: 100%; height: auto; background: var(--gray-100); cursor: zoom-in; transition: opacity .15s; }
+.diagram-card img:hover { opacity: 0.92; }
+.diagram-placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  padding: 34px 16px; background: linear-gradient(135deg, var(--gray-50), var(--gray-100)); color: var(--gray-500);
+}
+.diagram-placeholder svg { color: var(--gray-400); }
+.diagram-placeholder .dp-label { font-size: 12px; font-weight: 600; color: var(--gray-600); text-align: center; }
+.diagram-cap { padding: 10px 16px; font-size: 12.5px; color: var(--gray-700); border-top: 1px solid var(--gray-100); font-weight: 600; }
+.diagram-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.diagram-grid .diagram-card { margin-bottom: 0; }
+.diagram-grid .diagram-placeholder { padding: 22px 12px; }
+
+/* Lightbox */
+.lightbox {
+  position: fixed; inset: 0; z-index: 500; display: none;
+  align-items: center; justify-content: center;
+  background: rgba(13,31,60,0.88); padding: 40px 24px;
+  backdrop-filter: blur(2px);
+}
+.lightbox.open { display: flex; }
+.lightbox-inner { max-width: min(1100px, 92vw); max-height: 88vh; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.lightbox img { max-width: 100%; max-height: 76vh; border-radius: var(--radius-lg); box-shadow: 0 20px 60px rgba(0,0,0,0.5); background: white; }
+.lightbox-cap { color: rgba(255,255,255,0.85); font-size: 14px; font-weight: 600; text-align: center; }
+.lightbox-close {
+  position: absolute; top: 20px; right: 24px; width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .15s;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
+
+/* FAQ accordion */
+.faq-section { margin-top: 46px; }
+.faq-heading { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; color: var(--navy); margin-bottom: 4px; }
+.faq-sub { font-size: 13.5px; color: var(--gray-600); margin-bottom: 18px; }
+.faq-item { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.faq-q {
+  width: 100%; text-align: left; padding: 15px 18px; background: none; border: none; cursor: pointer;
+  display: flex; align-items: center; gap: 12px; font-family: 'Barlow', sans-serif;
+}
+.faq-q:hover { background: var(--gray-50); }
+.faq-q-text { flex: 1; font-weight: 700; font-size: 14.5px; color: var(--navy); }
+.faq-q-icon { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--gray-100); color: var(--gray-600); display: flex; align-items: center; justify-content: center; transition: transform .18s, background .15s, color .15s; }
+.faq-item.open .faq-q-icon { transform: rotate(45deg); background: var(--orange); color: white; }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .25s ease; }
+.faq-item.open .faq-a { max-height: 900px; }
+.faq-a-inner { padding: 0 18px 16px 18px; font-size: 14px; color: var(--gray-700); line-height: 1.7; }
+.faq-a-inner p { margin-bottom: 10px; }
+.faq-a-inner ul { padding-left: 20px; margin-bottom: 10px; }
+.faq-a-inner li { margin-bottom: 4px; }
+.faq-a-inner a { color: var(--orange); font-weight: 600; }
+
+/* Prev/next footer nav */
+.page-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--gray-200); }
+.page-nav-link { flex: 1; max-width: 48%; text-decoration: none; padding: 16px 18px; border-radius: var(--radius-lg); background: white; border: 1px solid var(--gray-200); box-shadow: var(--shadow); transition: box-shadow .15s, border-color .15s; }
+.page-nav-link:hover { box-shadow: var(--shadow-lg); border-color: var(--orange-light); }
+.page-nav-link.next { text-align: right; margin-left: auto; }
+.pn-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: var(--gray-500); margin-bottom: 4px; }
+.pn-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: var(--navy); }
+
+/* Home: recent/all categories page (below cover) */
+.home-sections { max-width: 1100px; margin: 0 auto; padding: 48px 40px 90px; }
+.home-section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 22px; color: var(--navy); margin-bottom: 18px; }
+.home-cat-block { margin-bottom: 40px; }
+.home-page-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.home-page-card {
+  background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 18px 20px;
+  text-decoration: none; box-shadow: var(--shadow); transition: box-shadow .15s, border-color .15s, transform .15s;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.home-page-card:hover { box-shadow: var(--shadow-lg); border-color: var(--orange-light); transform: translateY(-2px); }
+.home-page-card-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: var(--navy); }
+.home-page-card-meta { font-size: 11.5px; color: var(--gray-500); font-weight: 600; }
+
+/* Footer */
+.app-footer { border-top: 1px solid var(--gray-200); background: white; padding: 26px 40px; text-align: center; font-size: 12.5px; color: var(--gray-500); }
+.app-footer strong { color: var(--navy); }
+
+/* Skeleton loader */
+.loading-state { padding: 80px 40px; text-align: center; color: var(--gray-500); }
+
+/* Scrollbar */
+::selection { background: rgba(232,119,34,0.25); }
+
+/* ───────── RESPONSIVE ───────── */
+@media (max-width: 980px) {
+  .burger { display: flex; }
+  .sidebar {
+    position: fixed; top: var(--header-h); left: 0; height: calc(100vh - var(--header-h));
+    transform: translateX(-100%); transition: transform .22s ease; z-index: 250; box-shadow: var(--shadow-lg);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.open { display: block; position: fixed; inset: var(--header-h) 0 0 0; background: rgba(0,0,0,0.35); z-index: 240; }
+  .brand-sub { display: none; }
+  .header-search { max-width: none; }
+}
+@media (max-width: 640px) {
+  .content-wrap { padding: 28px 18px 70px; }
+  .cover { padding: 40px 18px 40px; }
+  .home-sections { padding: 36px 18px 70px; }
+  .spec-rows { grid-template-columns: 1fr; }
+  .page-nav { flex-direction: column; }
+  .page-nav-link { max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <button class="burger" id="burgerBtn" aria-label="Åbn menu">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <a href="#/" class="brand">
+    <img src="https://stark-udlejning.netlify.app/top_logo.png" alt="STARK Udlejning">
+    <div class="brand-div"></div>
+    <div>
+      <div class="brand-title">Akademiet</div>
+      <div class="brand-sub">STARK Udlejning</div>
+    </div>
+  </a>
+  <div class="header-search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchInput" placeholder="Søg i Akademiet — fx “risikotillæg” eller “skurvogn mål”…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <nav class="sidebar" id="sidebar">
+    <a href="#/" class="nav-home-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+      Forside
+    </a>
+    <div id="navGroups"></div>
+  </nav>
+
+  <main class="main" id="mainContent">
+    <div class="loading-state">Indlæser Akademiet …</div>
+  </main>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="if(event.target===this) closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Luk">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <div class="lightbox-inner">
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-cap" id="lightboxCap"></div>
+  </div>
+</div>
+
+<script>
+const ICONS = {
+  compass: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+  lift: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="14" width="16" height="7" rx="1"/><path d="M8 14V8l4-5 4 5v6"/><line x1="12" y1="3" x2="12" y2="8"/></svg>',
+  excavator: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="19" r="2"/><circle cx="16" cy="19" r="2"/><path d="M3 19h1M8 19h6"/><path d="M9 19V9h4l6-4"/><path d="M19 5l2 3-4 2"/></svg>',
+  cabin: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5L12 4l9 6.5"/><path d="M5 9.5V20h14V9.5"/><line x1="9" y1="20" x2="9" y2="13"/><line x1="15" y1="20" x2="15" y2="13"/></svg>',
+  chart: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="20" x2="20" y2="20"/><rect x="6" y="12" width="3" height="8"/><rect x="11" y="7" width="3" height="13"/><rect x="16" y="3" width="3" height="17"/></svg>',
+  compass2: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="4"/></svg>',
+};
+const IMG_ICON = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
+const CHEV = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>';
+const PLUS = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+
+let DATA = null;
+let ORDERED_PAGES = [];
+
+function pageById(id) { return DATA.pages.find(p => p.id === id); }
+function catById(id) { return DATA.categories.find(c => c.id === id); }
+
+function flattenText(page) {
+  let parts = [page.label];
+  page.blocks.forEach(b => {
+    if (b.type === 'rte') parts.push(b.html.replace(/<[^>]+>/g,' '));
+    if (b.type === 'hero') parts.push(b.headline, (b.description||'').replace(/<[^>]+>/g,' '));
+    if (b.type === 'spec') parts.push(b.title||'', b.rows.map(r=>r.join(' ')).join(' '));
+    if (b.type === 'faq') parts.push(b.q, b.a.replace(/<[^>]+>/g,' '));
+  });
+  return parts.join(' ').toLowerCase();
+}
+
+function renderNav() {
+  const wrap = document.getElementById('navGroups');
+  wrap.innerHTML = DATA.categories.map(cat => `
+    <div class="nav-group" data-cat="${cat.id}">
+      <button class="nav-group-btn" onclick="toggleGroup('${cat.id}')">
+        <span class="nav-group-icon">${ICONS[cat.icon]||''}</span>
+        <span class="nav-group-label">${cat.label}</span>
+        <span class="nav-group-chev">${CHEV}</span>
+      </button>
+      <ul class="nav-pages">
+        ${cat.pages.map(p => `<li><a class="nav-page-link" data-page="${p.id}" href="#/${cat.id}/${p.slug}">${p.label}</a></li>`).join('')}
+      </ul>
+    </div>
+  `).join('');
+}
+
+function toggleGroup(catId, force) {
+  const el = document.querySelector(`.nav-group[data-cat="${catId}"]`);
+  if (!el) return;
+  if (force === 'open') { el.classList.add('open'); return; }
+  if (force === 'close') { el.classList.remove('open'); return; }
+  el.classList.toggle('open');
+}
+
+function escapeHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderBlock(b) {
+  if (b.type === 'hero') {
+    return `<div class="hero-block">
+      ${b.headline ? `<div class="hh">${escapeHtml(b.headline)}</div>` : ''}
+      ${b.description ? `<div class="hd">${b.description}</div>` : ''}
+    </div>`;
+  }
+  if (b.type === 'rte') {
+    return `<div class="block">${b.html}</div>`;
+  }
+  if (b.type === 'spec') {
+    return `<div class="spec-card">
+      ${b.title ? `<div class="spec-card-title">${escapeHtml(b.title)}</div>` : ''}
+      <div class="spec-rows">
+        ${b.rows.map(([k,v]) => `<div class="spec-row"><span class="spec-k">${escapeHtml(k)}</span><span class="spec-v">${escapeHtml(v)}</span></div>`).join('')}
+      </div>
+    </div>`;
+  }
+  if (b.type === 'section-nav') {
+    return `<div class="section-nav">
+      <div class="section-nav-label">Udforsk emnet</div>
+      <div class="section-nav-grid">
+        ${b.items.map(it => `
+          <a class="section-nav-card" href="#/${it.cat}/${it.slug}">
+            <span class="section-nav-card-icon">${CHEV}</span>
+            <span class="section-nav-card-title">${escapeHtml(it.label)}</span>
+          </a>
+        `).join('')}
+      </div>
+    </div>`;
+  }
+  return '';
+}
+
+function renderImageCard(b) {
+  const cap = b.caption && b.caption.trim() ? b.caption : niceFileLabel(b.file);
+  const src = 'images/' + encodeURI(b.file);
+  return `<div class="diagram-card">
+    <img src="${src}" alt="${escapeHtml(cap)}" loading="lazy"
+      data-lightbox-src="${src}" data-lightbox-cap="${escapeHtml(cap)}" data-expected-file="${escapeHtml(b.file)}"
+      onerror="handleImgError(this)">
+    <div class="diagram-placeholder" style="display:flex">
+      ${IMG_ICON}
+      <div class="dp-label">Diagram/billede<br>tilføjes: <code>${escapeHtml(b.file)}</code></div>
+    </div>
+    <div class="diagram-cap">${escapeHtml(cap)}</div>
+  </div>`;
+}
+
+function handleImgError(img) {
+  console.warn(`[Akademiet] Billede ikke fundet: images/${img.dataset.expectedFile} (side: ${location.hash})`);
+  const card = img.closest('.diagram-card');
+  const ph = card.querySelector('.diagram-placeholder');
+  if (ph) ph.style.display = 'flex';
+  img.style.display = 'none';
+}
+
+document.addEventListener('click', e => {
+  const img = e.target.closest('img[data-lightbox-src]');
+  if (img && img.style.display !== 'none') {
+    openLightbox(img.dataset.lightboxSrc, img.dataset.lightboxCap);
+  }
+});
+
+function openLightbox(src, caption) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightboxImg').alt = caption;
+  document.getElementById('lightboxCap').textContent = caption;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+function niceFileLabel(fn) {
+  let name = fn.replace(/\.[a-z0-9]+$/i,'').replace(/-/g,' ');
+  return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+function renderFaqSection(faqs, uid) {
+  if (!faqs.length) return '';
+  return `<div class="faq-section">
+    <div class="faq-heading">Ofte stillede spørgsmål</div>
+    <div class="faq-sub">${faqs.length} spørgsmål om dette emne</div>
+    ${faqs.map((f,i) => `
+      <div class="faq-item" id="faq-${uid}-${i}">
+        <button class="faq-q" onclick="toggleFaq('${uid}-${i}')">
+          <span class="faq-q-text">${escapeHtml(f.q)}</span>
+          <span class="faq-q-icon">${PLUS}</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">${f.a}</div></div>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+function toggleFaq(id) {
+  const el = document.getElementById('faq-'+id);
+  const wasOpen = el.classList.contains('open');
+  el.classList.toggle('open', !wasOpen);
+}
+
+function renderCover() {
+  const totalPages = DATA.pages.length;
+  return `
+  <div class="cover">
+    <div class="cover-inner">
+      <div class="cover-badge"><div class="cover-badge-dot"></div>Internt opslagsværk · ${totalPages} sider</div>
+      <h1>Velkommen til<br><span>Udlejning Akademiet</span></h1>
+      <p class="lead">Alt hvad du skal vide om udstyr, sikkerhed, systemer og forretningsforståelse i STARK Udlejning — samlet ét sted. Slå op når du har brug for det, eller gå på opdagelse fra bunden.</p>
+    </div>
+    <div class="cat-grid">
+      ${DATA.categories.map(c => `
+        <a class="cat-card" href="#/${c.id}/${c.pages[0].slug}">
+          <div class="cat-card-icon">${ICONS[c.icon]||''}</div>
+          <div class="cat-card-title">${c.label}</div>
+          <div class="cat-card-count">${c.pages.length} ${c.pages.length===1?'side':'sider'}</div>
+        </a>
+      `).join('')}
+    </div>
+  </div>
+  <div class="home-sections">
+    ${DATA.categories.map(c => `
+      <div class="home-cat-block">
+        <div class="home-section-title">${c.label}</div>
+        <div class="home-page-grid">
+          ${c.pages.map(p => `
+            <a class="home-page-card" href="#/${c.id}/${p.slug}">
+              <div class="home-page-card-title">${p.label}</div>
+              <div class="home-page-card-meta">${c.label}</div>
+            </a>
+          `).join('')}
+        </div>
+      </div>
+    `).join('')}
+  </div>
+  ${renderFooter()}
+  `;
+}
+
+function renderFooter() {
+  return `<footer class="app-footer">
+    <strong>STARK Udlejning Akademiet</strong> — internt opslagsværk. Indhold vedligeholdes af STARK Udlejning.
+  </footer>`;
+}
+
+function renderPage(catId, slug) {
+  const cat = catById(catId);
+  if (!cat) { renderNotFound(); return; }
+  const pageMeta = cat.pages.find(p => p.slug === slug);
+  if (!pageMeta) { renderNotFound(); return; }
+  const page = pageById(pageMeta.id);
+
+  const faqs = page.blocks.filter(b => b.type === 'faq');
+  const otherBlocks = page.blocks.filter(b => b.type !== 'faq');
+
+  // group consecutive image blocks into a grid
+  let bodyHtml = '';
+  let i = 0;
+  while (i < otherBlocks.length) {
+    const b = otherBlocks[i];
+    if (b.type === 'image') {
+      let group = [];
+      while (i < otherBlocks.length && otherBlocks[i].type === 'image') { group.push(otherBlocks[i]); i++; }
+      if (group.length === 1) {
+        bodyHtml += renderImageCard(group[0]);
+      } else {
+        bodyHtml += `<div class="diagram-grid">${group.map(renderImageCard).join('')}</div>`;
+      }
+    } else {
+      bodyHtml += renderBlock(b);
+      i++;
+    }
+  }
+
+  // prev/next within category
+  const idx = cat.pages.findIndex(p => p.slug === slug);
+  const prev = idx > 0 ? cat.pages[idx-1] : null;
+  const next = idx < cat.pages.length-1 ? cat.pages[idx+1] : null;
+
+  const main = document.getElementById('mainContent');
+  main.innerHTML = `
+    <div class="content-wrap">
+      <div class="page-eyebrow"><a href="#/${cat.id}/${cat.pages[0].slug}">${cat.label}</a> <span>/</span> ${page.label}</div>
+      <h1 class="page-title">${page.label}</h1>
+      <div class="prose">${bodyHtml || '<p style="color:var(--gray-500)">Indhold følger snart.</p>'}</div>
+      ${renderFaqSection(faqs, page.id)}
+      <div class="page-nav">
+        ${prev ? `<a class="page-nav-link prev" href="#/${cat.id}/${prev.slug}"><div class="pn-label">← Forrige</div><div class="pn-title">${prev.label}</div></a>` : '<div></div>'}
+        ${next ? `<a class="page-nav-link next" href="#/${cat.id}/${next.slug}"><div class="pn-label">Næste →</div><div class="pn-title">${next.label}</div></a>` : ''}
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+  window.scrollTo(0,0);
+
+  // sidebar active state
+  document.querySelectorAll('.nav-page-link').forEach(a => a.classList.toggle('active', a.dataset.page === page.id));
+  document.querySelectorAll('.nav-group').forEach(g => g.classList.toggle('has-active', g.dataset.cat === catId));
+  toggleGroup(catId, 'open');
+
+  document.title = `${page.label} · ${cat.label} — STARK Udlejning Akademiet`;
+  closeSidebarMobile();
+}
+
+function renderNotFound() {
+  document.getElementById('mainContent').innerHTML = `<div class="content-wrap"><h1 class="page-title">Siden findes ikke</h1><p class="prose"><a href="#/">Gå til forsiden →</a></p></div>`;
+}
+
+function router() {
+  const hash = location.hash.replace(/^#\/?/, '');
+  if (!hash) {
+    document.getElementById('mainContent').innerHTML = renderCover();
+    document.querySelectorAll('.nav-page-link').forEach(a => a.classList.remove('active'));
+    document.title = 'STARK Udlejning Akademiet';
+    closeSidebarMobile();
+    window.scrollTo(0,0);
+    return;
+  }
+  const parts = hash.split('/').filter(Boolean);
+  if (parts.length >= 2) renderPage(parts[0], parts[1]);
+  else renderNotFound();
+}
+
+/* Search */
+let searchIndex = [];
+function buildSearchIndex() {
+  searchIndex = DATA.pages.map(p => {
+    const cat = catById(p.category);
+    return { id: p.id, cat: cat.label, catId: p.category, slug: p.slug, label: p.label, text: flattenText(p) };
+  });
+}
+function doSearch(q) {
+  q = q.trim().toLowerCase();
+  const box = document.getElementById('searchResults');
+  if (!q) { box.classList.remove('open'); box.innerHTML=''; return; }
+  const terms = q.split(/\s+/).filter(Boolean);
+  const scored = searchIndex.map(item => {
+    let score = 0;
+    terms.forEach(t => {
+      if (item.label.toLowerCase().includes(t)) score += 10;
+      const count = item.text.split(t).length - 1;
+      score += count;
+    });
+    return { item, score };
+  }).filter(s => s.score > 0).sort((a,b) => b.score - a.score).slice(0, 8);
+
+  if (!scored.length) {
+    box.innerHTML = `<div class="sr-empty">Ingen resultater for “${escapeHtml(q)}”</div>`;
+    box.classList.add('open');
+    return;
+  }
+  box.innerHTML = scored.map(({item}) => {
+    const idx = item.text.indexOf(terms[0]);
+    let snippet = '';
+    if (idx >= 0) {
+      const start = Math.max(0, idx-40);
+      snippet = (start>0?'…':'') + item.text.slice(start, idx+80).trim() + '…';
+      const re = new RegExp('('+terms.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','ig');
+      snippet = escapeHtml(snippet).replace(re, '<mark>$1</mark>');
+    }
+    return `<a class="sr-item" href="#/${item.catId}/${item.slug}">
+      <div class="sr-cat">${escapeHtml(item.cat)}</div>
+      <div class="sr-title">${escapeHtml(item.label)}</div>
+      ${snippet ? `<div class="sr-snippet">${snippet}</div>` : ''}
+    </a>`;
+  }).join('');
+  box.classList.add('open');
+}
+
+/* Mobile sidebar */
+function openSidebarMobile() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('open');
+}
+function closeSidebarMobile() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+async function init() {
+  try {
+    const res = await fetch('data/academy-data.json');
+    DATA = await res.json();
+  } catch (e) {
+    document.getElementById('mainContent').innerHTML = `<div class="content-wrap"><p class="prose">Kunne ikke indlæse indhold. Tjek at <code>data/academy-data.json</code> findes.</p></div>`;
+    return;
+  }
+  renderNav();
+  buildSearchIndex();
+  window.addEventListener('hashchange', router);
+  router();
+
+  document.getElementById('searchInput').addEventListener('input', e => doSearch(e.target.value));
+  document.getElementById('searchInput').addEventListener('focus', e => { if (e.target.value) doSearch(e.target.value); });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.header-search')) {
+      document.getElementById('searchResults').classList.remove('open');
+    }
+  });
+  document.getElementById('burgerBtn').addEventListener('click', openSidebarMobile);
+  document.getElementById('sidebarOverlay').addEventListener('click', closeSidebarMobile);
+}
+
+init();
+</script>
+</body>
+</html>
