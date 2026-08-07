@@ -65,7 +65,7 @@ indhold** (maskinfotos, diagrammer, lastdiagrammer osv.).
 
 ## Skurvogne
 
-### Maskintyper
+### Vognkategori
 
 | # | Filnavn (som på SharePoint — læg i /images/) | Kontekst på siden |
 |---|---|---|
