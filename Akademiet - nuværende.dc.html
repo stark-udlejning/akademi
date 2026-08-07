@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Barlow', sans-serif; background: #f8f9fa; color: #212529; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+@keyframes driftOrb { from { transform: translate(0,0) scale(1); } to { transform: translate(-30px,40px) scale(1.08); } }
+@keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(232,119,34,0.55); } 70% { box-shadow: 0 0 0 7px rgba(232,119,34,0); } 100% { box-shadow: 0 0 0 0 rgba(232,119,34,0); } }
+.prose li::marker { color: #E87722; font-weight: 700; }
+</style>
+</helmet>
+
+<div style="position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:900;display:flex;gap:6px;background:#fff;border:1px solid #e9ecef;border-radius:100px;padding:5px;box-shadow:0 4px 10px rgba(27,58,107,0.08),0 16px 40px rgba(27,58,107,0.16)">
+  <button onClick="{{ showHome }}" style="border:none;cursor:pointer;font-family:Barlow,sans-serif;font-weight:700;font-size:12.5px;padding:8px 16px;border-radius:100px;background:{{ homeBtnBg }};color:{{ homeBtnFg }}">Forside</button>
+  <button onClick="{{ showPage }}" style="border:none;cursor:pointer;font-family:Barlow,sans-serif;font-weight:700;font-size:12.5px;padding:8px 16px;border-radius:100px;background:{{ pageBtnBg }};color:{{ pageBtnFg }}">Indholdsside</button>
+</div>
+
+<header style="position:sticky;top:0;z-index:200;height:64px;background:#1B3A6B;box-shadow:0 2px 16px rgba(0,0,0,0.20);display:flex;align-items:center;padding:0 20px;gap:14px">
+  <a href="#/" style="display:flex;align-items:center;gap:14px;text-decoration:none;flex-shrink:0">
+    <img src="https://stark-udlejning.netlify.app/top_logo.png" alt="STARK Udlejning" style="height:34px;display:block">
+    <div style="width:1px;height:28px;background:rgba(255,255,255,0.2)"></div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:19px;color:#fff;letter-spacing:0.2px;line-height:1.1">Akademiet</div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.6px;color:rgba(255,255,255,0.45)">STARK Udlejning</div>
+    </div>
+  </a>
+  <div style="flex:1;max-width:460px;margin-left:auto;position:relative">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.45);pointer-events:none"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input type="text" placeholder="Søg i Akademiet — fx “risikotillæg” eller “skurvogn mål”…" style="width:100%;padding:9px 14px 9px 38px;border-radius:100px;border:none;background:rgba(255,255,255,0.10);color:#fff;font-family:Barlow,sans-serif;font-size:14px;outline:none">
+  </div>
+</header>
+
+<div style="display:flex;align-items:flex-start;min-height:calc(100vh - 64px)">
+  <nav style="width:296px;flex-shrink:0;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;background:#fff;border-right:1px solid #e9ecef;padding:18px 12px 40px">
+    <a href="#/" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;color:#1B3A6B;font-weight:700;font-size:14px;margin-bottom:14px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M3 12l9-9 9 9"></path><path d="M5 10v10h14V10"></path></svg>
+      Forside
+    </a>
+    <div>{{ navGroups }}</div>
+  </nav>
+
+  <main style="flex:1;min-width:0">
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <div style="background:linear-gradient(155deg,#0d1f3c 0%,#1B3A6B 55%,#2850a0 100%);position:relative;overflow:hidden;padding:64px 40px 56px">
+        <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,0.015) 40px,rgba(255,255,255,0.015) 41px)"></div>
+        <div style="position:absolute;z-index:0;pointer-events:none;width:620px;height:620px;right:-180px;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(232,119,34,0.28) 0%,rgba(232,119,34,0) 70%);filter:blur(10px);animation:driftOrb 16s ease-in-out infinite alternate"></div>
+        <div style="position:relative;z-index:1;max-width:900px">
+          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(232,119,34,0.15);border:1px solid rgba(232,119,34,0.35);color:#f59340;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:7px 14px;border-radius:100px;margin-bottom:26px">
+            <div style="width:7px;height:7px;background:#E87722;border-radius:50%;animation:pulseDot 2.2s ease-out infinite"></div>Internt opslagsværk · 25 sider
+          </div>
+          <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(38px, 6vw, 68px);line-height:0.96;letter-spacing:-0.5px;color:#fff;margin-bottom:18px">Velkommen til<br><span style="background:linear-gradient(100deg,#f59340,#E87722 60%);-webkit-background-clip:text;background-clip:text;color:transparent">Udlejning Akademiet</span></h1>
+          <p style="font-size:17px;color:rgba(255,255,255,0.65);max-width:640px;line-height:1.6">Alt hvad du skal vide om udstyr, sikkerhed, systemer og forretningsforståelse i STARK Udlejning — samlet ét sted. Slå op når du har brug for det, eller gå på opdagelse fra bunden.</p>
+        </div>
+        <div style="position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;max-width:1100px;margin-top:36px">{{ catCards }}</div>
+      </div>
+      <div style="max-width:1100px;margin:0 auto;padding:48px 40px 90px">{{ homeSections }}</div>
+    </sc-if>
+
+    <sc-if value="{{ isPage }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:900px;margin:0 auto;padding:40px 40px 100px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#E87722;margin-bottom:8px;display:flex;align-items:center;gap:8px"><a href="#" style="text-decoration:none;color:#E87722">Økonomi &amp; forretningsforståelse</a> <span>/</span> Bruttoavance</div>
+        <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:44px;color:#1B3A6B;line-height:1.05;margin-bottom:28px;letter-spacing:-0.3px">Bruttoavance</h1>
+        <div class="prose" style="font-size:15.5px;line-height:1.75;color:#212529">
+          <div style="margin-bottom:6px">
+            <p style="margin:0 0 14px"><strong style="color:#1B3A6B;font-weight:700">Bruttoavance &amp; tilvalg</strong></p>
+            <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;color:#1B3A6B;margin:0 0 14px;letter-spacing:-0.2px;padding-bottom:10px;border-bottom:2px solid #e9ecef;position:relative" style-after="content:'';position:absolute;left:0;bottom:-2px;width:46px;height:2px;background:linear-gradient(90deg,#E87722,rgba(232,119,34,0))">Fundamentet for en sund og stærk udlejningsforretning</h2>
+            <p style="margin:0 0 14px">Bruttoavancen er ikke et tal, der opstår til sidst.<br>Det er noget vi <strong style="color:#1B3A6B;font-weight:700">skaber</strong>, allerede når vi tager telefonen, opretter ordren, rådgiver kunden eller håndterer tilvalg.</p>
+            <p style="margin:0 0 14px">Dette modul giver dig konkrete greb, eksempler og rutiner, der gør dig <strong style="color:#1B3A6B;font-weight:700">markant stærkere i hverdagen</strong> – uden at gøre opgaven tungere.</p>
+            <p style="margin:0 0 14px"><strong style="color:#1B3A6B;font-weight:700">Fordi bruttoavancen er direkte påvirket af:</strong></p>
+            <ul style="margin:0 0 16px;padding-left:22px">
+              <li style="margin-bottom:6px">hvordan vi opbygger en ordre</li>
+              <li style="margin-bottom:6px">hvilke tilvalg vi får med</li>
+              <li style="margin-bottom:6px">hvilke fejl vi undgår</li>
+              <li style="margin-bottom:6px">hvordan vi taler med kunden</li>
+              <li style="margin-bottom:6px">hvornår vi siger “ja” – og hvornår vi siger “lad os gøre det rigtigt først”</li>
+            </ul>
+          </div>
+          <a href="#" style="display:flex;align-items:center;gap:16px;background:linear-gradient(120deg,#1B3A6B 0%,#132d54 60%,#24457f 100%);color:#fff;text-decoration:none;border-radius:22px;padding:18px 22px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:0 4px 10px rgba(27,58,107,0.08),0 16px 40px rgba(27,58,107,0.16)">
+            <span style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120px 120px at 90% 0%,rgba(232,119,34,0.35),transparent 70%)"></span>
+            <span style="flex-shrink:0;width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#f59340,#E87722);display:flex;align-items:center;justify-content:center;color:#fff;position:relative;z-index:1">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path></svg>
+            </span>
+            <span style="flex:1;min-width:0;position:relative;z-index:1;display:flex;flex-direction:column;gap:3px">
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:17px;letter-spacing:-0.1px;line-height:1.25">Lad vores ai agent hjælpe dig med at blive klogere</span>
+              <span style="font-size:11px;color:rgba(255,255,255,0.55);font-weight:700;text-transform:uppercase;letter-spacing:1.2px">Åbner i Teams</span>
+            </span>
+            <span style="flex-shrink:0;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#fff;position:relative;z-index:1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </span>
+          </a>
+          <div style="margin-bottom:6px">
+            <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;color:#1B3A6B;margin:26px 0 10px"><strong>1. Sådan er prisen skruet sammen – og hvorfor det er vigtigt, at du forstår den</strong></h3>
+            <p style="margin:0 0 14px">I STARK Udlejning arbejder vi <strong style="color:#1B3A6B;font-weight:700">altid</strong> ud fra den samme faste prisopbygning.<br>Den sikrer, at vores priser er:</p>
+            <ul style="margin:0 0 16px;padding-left:22px">
+              <li style="margin-bottom:6px">ensartede</li>
+              <li style="margin-bottom:6px">gennemsigtige</li>
+              <li style="margin-bottom:6px">retvisende for kunden</li>
+              <li style="margin-bottom:6px">og sunde for forretningen</li>
+            </ul>
+            <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;color:#1B3A6B;margin:26px 0 10px">Den faste prislogik (grundmodellen)</h3>
+            <p style="margin:0 0 14px">Alle udlejningspriser bygges op sådan her:</p>
+            <p style="margin:0 0 14px"><strong style="color:#1B3A6B;font-weight:700">Listepris pr. dag</strong><br>→ <strong style="color:#1B3A6B;font-weight:700">Rabat</strong> (giver kundepris pr. dag)<br>→ <strong style="color:#1B3A6B;font-weight:700">+ risikotillæg (6,5 %)</strong><br>→ <strong style="color:#1B3A6B;font-weight:700">+ miljøbidrag (3,5 %)</strong><br>= <strong style="color:#1B3A6B;font-weight:700">Kundepris total</strong></p>
+          </div>
+        </div>
+
+        <div style="margin-top:46px">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+            <div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;color:#1B3A6B;margin-bottom:4px">Ofte stillede spørgsmål</div>
+              <div style="font-size:13.5px;color:#868e96">4 spørgsmål om dette emne</div>
+            </div>
+            <button style="flex-shrink:0;background:#fff;border:1px solid #e9ecef;border-radius:100px;padding:9px 18px;font-family:Barlow,sans-serif;font-weight:700;font-size:12.5px;color:#1B3A6B;cursor:pointer">Fold alle ud</button>
+          </div>
+          <div style="margin-top:18px">{{ faqItems }}</div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:24px;border-top:1px solid #e9ecef">
+          <a href="#" style="flex:1;max-width:48%;text-decoration:none;padding:16px 18px;border-radius:14px;background:#fff;border:1px solid #e9ecef;box-shadow:0 1px 2px rgba(27,58,107,0.06),0 4px 16px rgba(27,58,107,0.08)">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:#868e96;margin-bottom:4px">← Forrige</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:#1B3A6B">Overblik</div>
+          </a>
+          <a href="#" style="flex:1;max-width:48%;text-decoration:none;padding:16px 18px;border-radius:14px;background:#fff;border:1px solid #e9ecef;box-shadow:0 1px 2px rgba(27,58,107,0.06),0 4px 16px rgba(27,58,107,0.08);text-align:right;margin-left:auto">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:#868e96;margin-bottom:4px">Næste →</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:#1B3A6B">Fakturakvalitet &amp; kreditnotaer</div>
+          </a>
+        </div>
+      </div>
+    </sc-if>
+
+    <footer style="border-top:1px solid #e9ecef;background:#fff;padding:26px 40px;text-align:center;font-size:12.5px;color:#868e96">
+      <strong style="color:#1B3A6B">STARK Udlejning Akademiet</strong> — internt opslagsværk. Indhold vedligeholdes af STARK Udlejning.
+    </footer>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const ICONS = {
+  compass: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+  lift: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="14" width="16" height="7" rx="1"/><path d="M8 14V8l4-5 4 5v6"/><line x1="12" y1="3" x2="12" y2="8"/></svg>',
+  excavator: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="19" r="2"/><circle cx="16" cy="19" r="2"/><path d="M3 19h1M8 19h6"/><path d="M9 19V9h4l6-4"/><path d="M19 5l2 3-4 2"/></svg>',
+  cabin: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5L12 4l9 6.5"/><path d="M5 9.5V20h14V9.5"/><line x1="9" y1="20" x2="9" y2="13"/><line x1="15" y1="20" x2="15" y2="13"/></svg>',
+  chart: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="20" x2="20" y2="20"/><rect x="6" y="12" width="3" height="8"/><rect x="11" y="7" width="3" height="13"/><rect x="16" y="3" width="3" height="17"/></svg>',
+  compass2: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="4"/></svg>'
+};
+const CHEV = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>';
+const CATS = [
+  { id:'ny-med-udlejning', label:'Ny med udlejning', icon:'compass', pages:[['overblik','Overblik'],['intro','Introforløb'],['kultur','Kultur & samarbejde'],['nethire','Nethire & systemer'],['hjaelp','Hvor finder jeg hjælp?']] },
+  { id:'lifte', label:'Lifte', icon:'lift', pages:[['overblik','Overblik'],['maskintyper','Maskintyper'],['sikkerhed','Sikkerhed'],['diagrammer','Diagrammer'],['manualer','Manualer']] },
+  { id:'anlaegsmaskiner', label:'Anlægsmaskiner', icon:'excavator', pages:[['overblik','Overblik'],['maskintyper','Maskintyper'],['sikkerhed','Sikkerhed'],['diagrammer','Diagrammer'],['manualer','Manualer']] },
+  { id:'skurvogne', label:'Skurvogne', icon:'cabin', pages:[['overblik','Overblik'],['maskintyper','Maskintyper'],['sikkerhed','Sikkerhed'],['diagrammer','Diagrammer & specifikationer']] },
+  { id:'oekonomi', label:'Økonomi & forretningsforståelse', icon:'chart', pages:[['overblik','Overblik'],['bruttoavance','Bruttoavance'],['fakturakvalitet','Fakturakvalitet & kreditnotaer'],['reparationer','Reparationer & liggetid'],['returdatoer','Returdatoer & overskredne lejeaftaler']] },
+  { id:'genvej', label:'Din genvej til viden', icon:'compass2', pages:[['overblik','Din genvej til viden']] }
+];
+const FAQS = [
+  'Hvorfor er risikotillægget på 6,5 %?',
+  'Må jeg give rabat uden godkendelse?',
+  'Hvad gør jeg, hvis kunden spørger til miljøbidraget?',
+  'Hvordan sikrer jeg, at tilvalg kommer med på ordren?'
+];
+const h = React.createElement;
+
+class Component extends DCLogic {
+  state = { screen: 'home', openCat: 'oekonomi' };
+  renderVals() {
+    const isHome = this.state.screen === 'home';
+    const activeCat = isHome ? null : 'oekonomi';
+    const activePage = isHome ? null : 'bruttoavance';
+    const openCat = this.state.openCat;
+
+    const navGroups = CATS.map(cat => {
+      const open = cat.id === openCat;
+      const hasActive = cat.id === activeCat;
+      return h('div', { key: cat.id, style: { marginBottom: 4 } },
+        h('button', {
+          onClick: () => this.setState(s => ({ openCat: s.openCat === cat.id ? null : cat.id })),
+          style: { width:'100%', display:'flex', alignItems:'center', gap:10, padding:'10px 12px', borderRadius:8, border:'none', background:'none', cursor:'pointer', textAlign:'left', fontFamily:'Barlow, sans-serif' }
+        },
+          h('span', { style:{ width:30, height:30, borderRadius:8, background:(open||hasActive)?'#1B3A6B':'#f1f3f5', color:(open||hasActive)?'#fff':'#1B3A6B', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }, dangerouslySetInnerHTML:{ __html: ICONS[cat.icon] } }),
+          h('span', { style:{ flex:1, fontWeight:700, fontSize:13.5, color:'#212529' } }, cat.label),
+          h('span', { style:{ color:'#adb5bd', flexShrink:0, transform: open?'rotate(90deg)':'none', transition:'transform .18s', display:'flex' }, dangerouslySetInnerHTML:{ __html: CHEV } })
+        ),
+        h('ul', { style:{ listStyle:'none', overflow:'hidden', maxHeight: open?600:0, transition:'max-height .22s ease' } },
+          cat.pages.map(([slug,label]) => {
+            const act = hasActive && slug === activePage;
+            return h('li', { key: slug, style:{ margin:'1px 0' } },
+              h('a', { href:'#', style:{
+                display:'block', textDecoration:'none', fontSize:13.5,
+                color: act ? '#E87722' : '#495057',
+                fontWeight: act ? 700 : 400,
+                padding:'8px 12px 8px 52px', borderRadius:8,
+                borderLeft: act ? '3px solid #E87722' : '3px solid transparent',
+                background: act ? 'linear-gradient(90deg,#fff2e6,#fff8f2)' : 'none'
+              } }, label)
+            );
+          })
+        )
+      );
+    });
+
+    const catCards = CATS.map(c => h('a', { key:c.id, href:'#', style:{
+      background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:14,
+      padding:20, textDecoration:'none', display:'flex', flexDirection:'column', gap:10
+    } },
+      h('div', { style:{ width:40, height:40, borderRadius:11, background:'linear-gradient(135deg,rgba(232,119,34,0.28),rgba(232,119,34,0.12))', display:'flex', alignItems:'center', justifyContent:'center', color:'#f59340' }, dangerouslySetInnerHTML:{ __html: ICONS[c.icon] } }),
+      h('div', { style:{ fontFamily:"'Barlow Condensed', sans-serif", fontWeight:800, fontSize:19, color:'#fff' } }, c.label),
+      h('div', { style:{ fontSize:12, color:'rgba(255,255,255,0.45)', fontWeight:600 } }, c.pages.length + (c.pages.length===1?' side':' sider'))
+    ));
+
+    const homeSections = CATS.map(c => h('div', { key:c.id, style:{ marginBottom:40 } },
+      h('div', { style:{ fontFamily:"'Barlow Condensed', sans-serif", fontWeight:800, fontSize:22, color:'#1B3A6B', marginBottom:18 } }, c.label),
+      h('div', { style:{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))', gap:14 } },
+        c.pages.map(([slug,label]) => h('a', { key:slug, href:'#', style:{
+          background:'#fff', border:'1px solid #e9ecef', borderRadius:14, padding:'18px 20px', textDecoration:'none',
+          boxShadow:'0 1px 2px rgba(27,58,107,0.06), 0 4px 16px rgba(27,58,107,0.08)', display:'flex', flexDirection:'column', gap:6
+        } },
+          h('div', { style:{ fontFamily:"'Barlow Condensed', sans-serif", fontWeight:700, fontSize:16, color:'#1B3A6B' } }, label),
+          h('div', { style:{ fontSize:11.5, color:'#868e96', fontWeight:600 } }, c.label)
+        ))
+      )
+    ));
+
+    const faqItems = FAQS.map((q,i) => h('div', { key:i, style:{ background:'#fff', border:'1px solid #e9ecef', borderRadius:8, marginBottom:10, overflow:'hidden' } },
+      h('button', { style:{ width:'100%', textAlign:'left', padding:'15px 18px', background:'none', border:'none', cursor:'pointer', display:'flex', alignItems:'center', gap:12, fontFamily:'Barlow, sans-serif' } },
+        h('span', { style:{ flex:1, fontWeight:700, fontSize:14.5, color:'#1B3A6B' } }, q),
+        h('span', { style:{ flexShrink:0, width:22, height:22, borderRadius:'50%', background:'#f1f3f5', color:'#868e96', display:'flex', alignItems:'center', justifyContent:'center' }, dangerouslySetInnerHTML:{ __html: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' } })
+      )
+    ));
+
+    return {
+      isHome, isPage: !isHome, navGroups, catCards, homeSections, faqItems,
+      showHome: () => this.setState({ screen:'home', openCat:'oekonomi' }),
+      showPage: () => this.setState({ screen:'page', openCat:'oekonomi' }),
+      homeBtnBg: isHome ? '#1B3A6B' : 'transparent', homeBtnFg: isHome ? '#fff' : '#495057',
+      pageBtnBg: isHome ? 'transparent' : '#1B3A6B', pageBtnFg: isHome ? '#495057' : '#fff'
+    };
+  }
+}
+</script>
+</body>
+</html>

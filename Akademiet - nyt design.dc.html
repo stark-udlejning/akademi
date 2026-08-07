@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Barlow', sans-serif; background: #FBFAF9; color: #1A1D21; -webkit-font-smoothing: antialiased; }
+a { color: #1B3A6B; }
+a:hover { color: #E87722; }
+.prose li::marker { color: #E87722; }
+@media (max-width: 1340px) { .art-toc { display: none !important; } }
+@media (max-width: 1180px) { .hdr-nav { display: none !important; } }
+@media (max-width: 1080px) { .art-nav { display: none !important; } .art-main { padding-left: 32px !important; padding-right: 32px !important; } }
+@media (max-width: 1000px) { .home-grid { grid-template-columns: 1fr !important; } .cat-grid { grid-template-columns: repeat(2,1fr) !important; } .spec-split { grid-template-columns: 1fr !important; } .thumb-grid { grid-template-columns: repeat(2,1fr) !important; } }
+::selection { background: rgba(232,119,34,0.18); }
+</style>
+</helmet>
+
+<div style="position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:900;display:flex;gap:2px;background:#fff;border:1px solid #E5E2DB;border-radius:999px;padding:4px">
+  <button onClick="{{ go0 }}" style="border:none;cursor:pointer;font-family:Barlow,sans-serif;font-weight:600;font-size:12.5px;padding:9px 16px;border-radius:999px;background:{{ b0 }};color:{{ f0 }}">Forside</button>
+  <button onClick="{{ go1 }}" style="border:none;cursor:pointer;font-family:Barlow,sans-serif;font-weight:600;font-size:12.5px;padding:9px 16px;border-radius:999px;background:{{ b1 }};color:{{ f1 }}">Indholdsside</button>
+  <button onClick="{{ go2 }}" style="border:none;cursor:pointer;font-family:Barlow,sans-serif;font-weight:600;font-size:12.5px;padding:9px 16px;border-radius:999px;background:{{ b2 }};color:{{ f2 }}">Diagrammer</button>
+  <button onClick="{{ go3 }}" style="border:none;cursor:pointer;font-family:Barlow,sans-serif;font-weight:600;font-size:12.5px;padding:9px 16px;border-radius:999px;background:{{ b3 }};color:{{ f3 }}">Søgning</button>
+  <button onClick="{{ go4 }}" style="border:none;cursor:pointer;font-family:Barlow,sans-serif;font-weight:600;font-size:12.5px;padding:9px 16px;border-radius:999px;background:{{ b4 }};color:{{ f4 }}">Mobil</button>
+</div>
+
+<sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
+<header data-screen-label="Header" style="position:sticky;top:0;z-index:200;height:88px;background:#1B3A6B;display:flex;align-items:center;padding:0 36px;gap:32px">
+  <a href="#/" style="display:flex;align-items:center;gap:22px;text-decoration:none;flex-shrink:0">
+    <img src="https://stark-udlejning.netlify.app/top_logo.png" alt="STARK Udlejning" style="width:320px;max-width:44vw;height:auto;display:block">
+    <div style="width:1px;height:36px;background:rgba(255,255,255,0.20)"></div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:28px;color:#fff;letter-spacing:0.4px;line-height:1;white-space:nowrap">Akademiet</div>
+  </a>
+  <div class="hdr-nav" style="display:flex;gap:4px;margin-left:8px">
+    <a href="#/" style="text-decoration:none;color:rgba(255,255,255,0.92);font-size:15px;font-weight:600;padding:10px 16px;border-radius:7px;background:rgba(255,255,255,0.10);white-space:nowrap">Forside</a>
+    <a href="#/" style="text-decoration:none;color:rgba(255,255,255,0.62);font-size:15px;font-weight:500;padding:10px 16px;border-radius:7px;white-space:nowrap" style-hover="color:#fff">Emner</a>
+    <a href="#/" style="text-decoration:none;color:rgba(255,255,255,0.62);font-size:15px;font-weight:500;padding:10px 16px;border-radius:7px;white-space:nowrap" style-hover="color:#fff">Mine favoritter</a>
+  </div>
+  <button onClick="{{ go3 }}" style="margin-left:auto;display:flex;align-items:center;gap:10px;width:100%;max-width:340px;min-width:200px;padding:12px 16px;border-radius:9px;border:1px solid rgba(255,255,255,0.16);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.55);font-family:Barlow,sans-serif;font-size:15px;cursor:pointer;text-align:left">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Søg i Akademiet</span>
+    <span style="font-size:11px;font-weight:600;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:2px 6px">⌘K</span>
+  </button>
+</header>
+</sc-if>
+
+<!-- ══════════ FORSIDE ══════════ -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<main data-screen-label="Forside" style="background:#FBFAF9">
+  <section style="max-width:1240px;margin:0 auto;padding:88px 32px 64px">
+    <div style="max-width:720px">
+      <div style="font-size:11.5px;font-weight:600;letter-spacing:2.2px;text-transform:uppercase;color:#E87722;margin-bottom:22px">Internt opslagsværk · 25 sider</div>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:64px;line-height:1.02;letter-spacing:-0.5px;color:#1B3A6B;margin-bottom:20px">Udlejning Akademiet</h1>
+      <p style="font-size:19px;line-height:1.65;color:#5C626B;max-width:600px">Udstyr, sikkerhed, systemer og forretningsforståelse — samlet ét sted. Slå op når du står med opgaven, eller gå forløbet igennem fra en ende af.</p>
+    </div>
+    <div style="margin-top:40px;max-width:720px">
+      <button onClick="{{ go3 }}" style="width:100%;display:flex;align-items:center;gap:14px;padding:18px 22px;border:1px solid #E5E2DB;border-radius:10px;background:#fff;cursor:pointer;font-family:Barlow,sans-serif;text-align:left" style-hover="border-color:#1B3A6B">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1B3A6B" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span style="flex:1;font-size:17px;color:#8A8F97">Søg — fx “risikotillæg” eller “skurvogn mål”</span>
+        <span style="font-size:12px;font-weight:600;color:#8A8F97;border:1px solid #E5E2DB;border-radius:4px;padding:3px 8px">⌘K</span>
+      </button>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+        <a href="#" style="text-decoration:none;font-size:13.5px;font-weight:500;color:#3F4650;border:1px solid #E5E2DB;border-radius:999px;padding:7px 14px;background:#fff" style-hover="border-color:#E87722;color:#E87722">Risikotillæg 6,5 %</a>
+        <a href="#" style="text-decoration:none;font-size:13.5px;font-weight:500;color:#3F4650;border:1px solid #E5E2DB;border-radius:999px;padding:7px 14px;background:#fff" style-hover="border-color:#E87722;color:#E87722">Skurvognsmål</a>
+        <a href="#" style="text-decoration:none;font-size:13.5px;font-weight:500;color:#3F4650;border:1px solid #E5E2DB;border-radius:999px;padding:7px 14px;background:#fff" style-hover="border-color:#E87722;color:#E87722">Liftcertifikat</a>
+        <a href="#" style="text-decoration:none;font-size:13.5px;font-weight:500;color:#3F4650;border:1px solid #E5E2DB;border-radius:999px;padding:7px 14px;background:#fff" style-hover="border-color:#E87722;color:#E87722">Nethire</a>
+        <a href="#" style="text-decoration:none;font-size:13.5px;font-weight:500;color:#3F4650;border:1px solid #E5E2DB;border-radius:999px;padding:7px 14px;background:#fff" style-hover="border-color:#E87722;color:#E87722">Kreditnota</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1240px;margin:0 auto;padding:0 32px 72px;display:grid;grid-template-columns:1.55fr 1fr;gap:24px;align-items:start" class="home-grid">
+    <div style="border:1px solid #E5E2DB;border-radius:12px;background:#fff;padding:28px 30px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:6px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;color:#1B3A6B">Kom godt i gang</div>
+        <div style="font-size:13px;font-weight:600;color:#7A7F87">2 af 5 gennemført</div>
+      </div>
+      <p style="font-size:15px;color:#7A7F87;margin-bottom:22px">Fem trin der giver dig fundamentet på din første uge.</p>
+      <div style="height:3px;background:#EEEBE4;border-radius:2px;margin-bottom:26px"><div style="width:40%;height:3px;background:#E87722;border-radius:2px"></div></div>
+      <div style="display:flex;flex-direction:column">
+        <a href="#" style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #F0EEE9;text-decoration:none">
+          <span style="width:24px;height:24px;border-radius:50%;background:#E87722;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </span>
+          <span style="flex:1;font-size:16px;font-weight:500;color:#9CA1A9;text-decoration:line-through">Velkommen &amp; kultur</span>
+          <span style="font-size:13px;color:#9CA1A9">4 min</span>
+        </a>
+        <a href="#" style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #F0EEE9;text-decoration:none">
+          <span style="width:24px;height:24px;border-radius:50%;background:#E87722;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </span>
+          <span style="flex:1;font-size:16px;font-weight:500;color:#9CA1A9;text-decoration:line-through">Introforløb</span>
+          <span style="font-size:13px;color:#9CA1A9">7 min</span>
+        </a>
+        <a href="#" style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid #F0EEE9;text-decoration:none;background:#FFF9F3;margin:0 -30px;padding-left:30px;padding-right:30px">
+          <span style="width:24px;height:24px;border-radius:50%;border:2px solid #E87722;flex-shrink:0"></span>
+          <span style="flex:1;font-size:16px;font-weight:600;color:#1B3A6B">Nethire &amp; systemer</span>
+          <span style="font-size:12.5px;font-weight:600;color:#E87722">Fortsæt →</span>
+        </a>
+        <a href="#" style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #F0EEE9;text-decoration:none">
+          <span style="width:24px;height:24px;border-radius:50%;border:2px solid #DFDCD5;flex-shrink:0"></span>
+          <span style="flex:1;font-size:16px;font-weight:500;color:#3F4650">Sikkerhed på pladsen</span>
+          <span style="font-size:13px;color:#9CA1A9">6 min</span>
+        </a>
+        <a href="#" style="display:flex;align-items:center;gap:16px;padding:14px 0;text-decoration:none">
+          <span style="width:24px;height:24px;border-radius:50%;border:2px solid #DFDCD5;flex-shrink:0"></span>
+          <span style="flex:1;font-size:16px;font-weight:500;color:#3F4650">Bruttoavance — grundmodellen</span>
+          <span style="font-size:13px;color:#9CA1A9">9 min</span>
+        </a>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <div style="border:1px solid #E5E2DB;border-radius:12px;background:#fff;padding:24px 26px">
+        <div style="font-size:11.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#7A7F87;margin-bottom:16px">Senest set</div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <a href="#" style="display:flex;align-items:center;gap:12px;padding:9px 0;text-decoration:none">
+            <span style="width:5px;height:5px;border-radius:50%;background:#DFDCD5;flex-shrink:0"></span>
+            <span style="flex:1;font-size:15px;color:#1A1D21">Bruttoavance</span>
+            <span style="font-size:12.5px;color:#9CA1A9">i går</span>
+          </a>
+          <a href="#" style="display:flex;align-items:center;gap:12px;padding:9px 0;text-decoration:none">
+            <span style="width:5px;height:5px;border-radius:50%;background:#DFDCD5;flex-shrink:0"></span>
+            <span style="flex:1;font-size:15px;color:#1A1D21">Diagrammer &amp; specifikationer</span>
+            <span style="font-size:12.5px;color:#9CA1A9">i går</span>
+          </a>
+          <a href="#" style="display:flex;align-items:center;gap:12px;padding:9px 0;text-decoration:none">
+            <span style="width:5px;height:5px;border-radius:50%;background:#DFDCD5;flex-shrink:0"></span>
+            <span style="flex:1;font-size:15px;color:#1A1D21">Sikkerhed — lifte</span>
+            <span style="font-size:12.5px;color:#9CA1A9">3 dage</span>
+          </a>
+        </div>
+      </div>
+      <div style="border:1px solid #E5E2DB;border-radius:12px;background:#fff;padding:24px 26px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#E87722" stroke="#E87722" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          <div style="font-size:11.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#7A7F87">Mine favoritter</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <a href="#" style="display:block;padding:9px 0;text-decoration:none;font-size:15px;color:#1A1D21">Prisopbygning — grundmodellen</a>
+          <a href="#" style="display:block;padding:9px 0;text-decoration:none;font-size:15px;color:#1A1D21">Skurvogn: Kontor 6 — mål</a>
+          <a href="#" style="display:block;padding:9px 0;text-decoration:none;font-size:15px;color:#1A1D21">Hvor finder jeg hjælp?</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1240px;margin:0 auto;padding:0 32px 100px">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:28px;color:#1B3A6B;margin-bottom:6px">Alle emner</div>
+    <p style="font-size:16px;color:#7A7F87;margin-bottom:28px">Seks kategorier, 25 sider.</p>
+    <div class="cat-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <a href="#" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;display:flex;flex-direction:column" style-hover="border-color:#1B3A6B">
+        <div style="height:190px;background:#F2F0EB;overflow:hidden"><img src="images/500905565-IMG_4852.JPG" alt="Bomlift på gaden" style="width:100%;height:100%;object-fit:cover"></div>
+        <div style="padding:20px 22px 22px;border-top:1px solid #EEEBE4">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:21px;color:#1B3A6B;margin-bottom:4px">Lifte</div>
+          <div style="font-size:14px;color:#7A7F87">Maskintyper · Sikkerhed · Diagrammer · Manualer</div>
+        </div>
+      </a>
+      <a href="#" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;display:flex;flex-direction:column" style-hover="border-color:#1B3A6B">
+        <div style="height:190px;background:#F2F0EB;overflow:hidden"><img src="images/anlaegsmaskiner-dumper.png" alt="Minigraver og dumper" style="width:100%;height:100%;object-fit:cover"></div>
+        <div style="padding:20px 22px 22px;border-top:1px solid #EEEBE4">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:21px;color:#1B3A6B;margin-bottom:4px">Anlægsmaskiner</div>
+          <div style="font-size:14px;color:#7A7F87">Maskintyper · Sikkerhed · Diagrammer · Manualer</div>
+        </div>
+      </a>
+      <a href="#" onClick="{{ go2 }}" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;display:flex;flex-direction:column" style-hover="border-color:#1B3A6B">
+        <div style="height:190px;background:#F2F0EB;overflow:hidden"><img src="images/1503388982-IMG_0945.JPG" alt="Skurvogne" style="width:100%;height:100%;object-fit:cover"></div>
+        <div style="padding:20px 22px 22px;border-top:1px solid #EEEBE4">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:21px;color:#1B3A6B;margin-bottom:4px">Skurvogne</div>
+          <div style="font-size:14px;color:#7A7F87">Maskintyper · Sikkerhed · Diagrammer &amp; specifikationer</div>
+        </div>
+      </a>
+      <a href="#" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;display:flex;flex-direction:column" style-hover="border-color:#1B3A6B">
+        <div style="height:190px;background:#1B3A6B;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.92)"><svg width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg></div>
+        <div style="padding:20px 22px 22px;border-top:1px solid #EEEBE4">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:21px;color:#1B3A6B;margin-bottom:4px">Ny med udlejning</div>
+          <div style="font-size:14px;color:#7A7F87">Introforløb · Kultur · Nethire · Hvor finder jeg hjælp?</div>
+        </div>
+      </a>
+      <a href="#" onClick="{{ go1 }}" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;display:flex;flex-direction:column" style-hover="border-color:#1B3A6B">
+        <div style="height:190px;background:#1B3A6B;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.92)"><svg width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><line x1="4" y1="20" x2="20" y2="20"></line><rect x="6" y="12" width="3" height="8"></rect><rect x="11" y="7" width="3" height="13"></rect><rect x="16" y="3" width="3" height="17"></rect></svg></div>
+        <div style="padding:20px 22px 22px;border-top:1px solid #EEEBE4">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:21px;color:#1B3A6B;margin-bottom:4px">Økonomi &amp; forretningsforståelse</div>
+          <div style="font-size:14px;color:#7A7F87">Bruttoavance · Fakturakvalitet · Reparationer · Returdatoer</div>
+        </div>
+      </a>
+      <a href="#" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;display:flex;flex-direction:column" style-hover="border-color:#1B3A6B">
+        <div style="height:190px;background:#1B3A6B;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.92)"><svg width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"></path><circle cx="12" cy="12" r="4"></circle></svg></div>
+        <div style="padding:20px 22px 22px;border-top:1px solid #EEEBE4">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:21px;color:#1B3A6B;margin-bottom:4px">Din genvej til viden</div>
+          <div style="font-size:14px;color:#7A7F87">Kontakter, systemer og hvor du finder svar</div>
+        </div>
+      </a>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<!-- ══════════ INDHOLDSSIDE ══════════ -->
+<sc-if value="{{ isArticle }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Indholdsside" style="display:flex;align-items:flex-start;background:#FBFAF9;min-height:calc(100vh - 88px)">
+  <nav class="art-nav" style="width:288px;flex-shrink:0;position:sticky;top:88px;height:calc(100vh - 88px);overflow-y:auto;padding:28px 20px 60px;border-right:1px solid #E5E2DB">
+    <div style="font-size:11.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#9CA1A9;padding:0 12px;margin-bottom:12px">Emner</div>
+    <a href="#" style="display:block;padding:9px 12px;border-radius:6px;text-decoration:none;font-size:15px;color:#3F4650">Ny med udlejning</a>
+    <a href="#" style="display:block;padding:9px 12px;border-radius:6px;text-decoration:none;font-size:15px;color:#3F4650">Lifte</a>
+    <a href="#" style="display:block;padding:9px 12px;border-radius:6px;text-decoration:none;font-size:15px;color:#3F4650">Anlægsmaskiner</a>
+    <a href="#" onClick="{{ go2 }}" style="display:block;padding:9px 12px;border-radius:6px;text-decoration:none;font-size:15px;color:#3F4650">Skurvogne</a>
+    <div style="margin-top:2px">
+      <div style="padding:9px 12px;font-size:15px;font-weight:600;color:#1B3A6B">Økonomi &amp; forretningsforståelse</div>
+      <div style="margin:2px 0 2px 12px;padding-left:14px;border-left:1px solid #E5E2DB;display:flex;flex-direction:column">
+        <a href="#" style="padding:7px 10px;border-radius:6px;text-decoration:none;font-size:14.5px;color:#5C626B">Overblik</a>
+        <a href="#" style="padding:7px 10px;border-radius:6px;text-decoration:none;font-size:14.5px;color:#E87722;font-weight:600;background:#FFF4EA">Bruttoavance</a>
+        <a href="#" style="padding:7px 10px;border-radius:6px;text-decoration:none;font-size:14.5px;color:#5C626B">Fakturakvalitet &amp; kreditnotaer</a>
+        <a href="#" style="padding:7px 10px;border-radius:6px;text-decoration:none;font-size:14.5px;color:#5C626B">Reparationer &amp; liggetid</a>
+        <a href="#" style="padding:7px 10px;border-radius:6px;text-decoration:none;font-size:14.5px;color:#5C626B">Returdatoer &amp; overskredne lejeaftaler</a>
+      </div>
+    </div>
+    <a href="#" style="display:block;padding:9px 12px;border-radius:6px;text-decoration:none;font-size:15px;color:#3F4650">Din genvej til viden</a>
+  </nav>
+
+  <main class="art-main" style="flex:1;min-width:0;display:flex;justify-content:center;gap:56px;padding:56px 48px 120px">
+    <article style="flex:1;min-width:0;max-width:720px">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#9CA1A9;margin-bottom:20px">
+        <a href="#" style="text-decoration:none;color:#7A7F87">Økonomi &amp; forretningsforståelse</a><span>/</span><span style="color:#3F4650">Bruttoavance</span>
+      </div>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:52px;line-height:1.05;letter-spacing:-0.5px;color:#1B3A6B;margin-bottom:18px">Bruttoavance</h1>
+      <p style="font-size:20px;line-height:1.6;color:#5C626B;margin-bottom:24px">Fundamentet for en sund og stærk udlejningsforretning.</p>
+      <div style="display:flex;align-items:center;gap:18px;padding-bottom:28px;border-bottom:1px solid #E5E2DB;margin-bottom:40px">
+        <span style="font-size:13.5px;color:#9CA1A9">9 min læsning</span>
+        <span style="font-size:13.5px;color:#9CA1A9">Opdateret 14. maj 2026</span>
+        <button style="margin-left:auto;display:flex;align-items:center;gap:7px;border:1px solid #E5E2DB;background:#fff;border-radius:999px;padding:7px 14px;font-family:Barlow,sans-serif;font-size:13px;font-weight:600;color:#3F4650;cursor:pointer" style-hover="border-color:#E87722;color:#E87722">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          Gem
+        </button>
+      </div>
+
+      <div style="border:1px solid #E5E2DB;border-left:2px solid #E87722;border-radius:10px;background:#fff;padding:24px 26px;margin-bottom:40px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;color:#1B3A6B;margin-bottom:8px">Sådan arbejder vi med prisen i STARK Udlejning</div>
+        <p style="font-size:16.5px;line-height:1.7;color:#5C626B;margin:0">Prisen skabes i mødet med kunden — ikke i regnearket bagefter. Her får du modellen, tallene og de rutiner der beskytter bruttoavancen.</p>
+      </div>
+
+      <div class="prose" style="font-size:17.5px;line-height:1.78;color:#2A2E35">
+        <p style="margin:0 0 20px">Bruttoavancen er ikke et tal, der opstår til sidst. Det er noget vi <strong style="font-weight:600;color:#1B3A6B">skaber</strong>, allerede når vi tager telefonen, opretter ordren, rådgiver kunden eller håndterer tilvalg.</p>
+        <p style="margin:0 0 20px">Dette modul giver dig konkrete greb, eksempler og rutiner, der gør dig <strong style="font-weight:600;color:#1B3A6B">markant stærkere i hverdagen</strong> – uden at gøre opgaven tungere.</p>
+
+        <h2 id="paavirkning" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:#1B3A6B;margin:56px 0 16px;letter-spacing:-0.2px">Hvad bruttoavancen påvirkes af</h2>
+        <ul style="margin:0 0 20px;padding-left:22px">
+          <li style="margin-bottom:9px">hvordan vi opbygger en ordre</li>
+          <li style="margin-bottom:9px">hvilke tilvalg vi får med</li>
+          <li style="margin-bottom:9px">hvilke fejl vi undgår</li>
+          <li style="margin-bottom:9px">hvordan vi taler med kunden</li>
+          <li style="margin-bottom:9px">hvornår vi siger “ja” – og hvornår vi siger “lad os gøre det rigtigt først”</li>
+        </ul>
+        <p style="margin:0 0 20px">Små fejl og glemte tilvalg kan koste hundredvis af kroner pr. ordre.</p>
+
+        <div style="border-left:2px solid #E87722;padding:4px 0 4px 22px;margin:32px 0 36px">
+          <p style="margin:0;font-size:19px;line-height:1.6;color:#1B3A6B">Vi kan have travlt – men vi må ikke få travlt på en måde, der gør os fattigere.</p>
+        </div>
+
+        <h2 id="prislogik" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:#1B3A6B;margin:56px 0 16px;letter-spacing:-0.2px">Den faste prislogik</h2>
+        <p style="margin:0 0 24px">I STARK Udlejning arbejder vi altid ud fra den samme faste prisopbygning. Alle udlejningspriser bygges op sådan her:</p>
+        <div style="border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;margin:0 0 24px">
+          <div style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid #F0EEE9">
+            <span style="font-size:12px;font-weight:600;color:#9CA1A9;width:20px">1</span>
+            <span style="flex:1;font-size:16.5px;font-weight:600;color:#1B3A6B">Listepris pr. dag</span>
+            <span style="font-size:14.5px;color:#7A7F87">udgangspunktet</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid #F0EEE9">
+            <span style="font-size:12px;font-weight:600;color:#9CA1A9;width:20px">2</span>
+            <span style="flex:1;font-size:16.5px;font-weight:600;color:#1B3A6B">− Rabat</span>
+            <span style="font-size:14.5px;color:#7A7F87">giver kundepris pr. dag</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid #F0EEE9">
+            <span style="font-size:12px;font-weight:600;color:#9CA1A9;width:20px">3</span>
+            <span style="flex:1;font-size:16.5px;font-weight:600;color:#1B3A6B">+ Risikotillæg<span style="display:block;font-weight:400;font-size:14.5px;color:#7A7F87;margin-top:2px">beregnes af listeprisen</span></span>
+            <span style="font-size:14.5px;font-weight:600;color:#E87722;font-variant-numeric:tabular-nums">6,5 %</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid #F0EEE9">
+            <span style="font-size:12px;font-weight:600;color:#9CA1A9;width:20px">4</span>
+            <span style="flex:1;font-size:16.5px;font-weight:600;color:#1B3A6B">+ Miljøbidrag<span style="display:block;font-weight:400;font-size:14.5px;color:#7A7F87;margin-top:2px">(kundepris/nettopris + risikotillæg) × 3,5 %</span></span>
+            <span style="font-size:14.5px;font-weight:600;color:#E87722;font-variant-numeric:tabular-nums">3,5 %</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;padding:18px 24px;background:#FBFAF9">
+            <span style="width:20px"></span>
+            <span style="flex:1;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:#1B3A6B">= Kundepris total</span>
+          </div>
+        </div>
+        <p style="margin:0 0 20px">Det er ikke noget, du skal opfinde fra sag til sag. Det er den samme model – hver gang.</p>
+        <div style="border:1px solid #E5E2DB;border-radius:12px;background:#fff;padding:22px 24px;margin:0 0 20px">
+          <div style="font-size:11.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#9CA1A9;margin-bottom:14px">Sådan beregnes de to tillæg</div>
+          <p style="margin:0 0 12px;font-size:16.5px;line-height:1.7"><strong style="font-weight:600;color:#1B3A6B">Risikotillæg</strong> beregnes af <strong style="font-weight:600;color:#1B3A6B">listeprisen</strong> — ikke af kundeprisen. Rabatten ændrer altså ikke tillæggets størrelse.</p>
+          <p style="margin:0;font-size:16.5px;line-height:1.7"><strong style="font-weight:600;color:#1B3A6B">Miljøbidrag</strong> = (kundepris/nettopris + risikotillæg) × 3,5 %.</p>
+        </div>
+      </div>
+
+      <section style="margin-top:72px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:20px">
+          <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:#1B3A6B">Ofte stillede spørgsmål</h2>
+          <button style="border:none;background:none;font-family:Barlow,sans-serif;font-size:13.5px;font-weight:600;color:#7A7F87;cursor:pointer">Fold alle ud</button>
+        </div>
+        <div style="border-top:1px solid #E5E2DB">
+          <div style="border-bottom:1px solid #E5E2DB">
+            <button style="width:100%;display:flex;align-items:center;gap:16px;padding:20px 0;background:none;border:none;cursor:pointer;text-align:left;font-family:Barlow,sans-serif">
+              <span style="flex:1;font-size:17px;font-weight:600;color:#1B3A6B">Hvorfor er risikotillægget på 6,5 %?</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E87722" stroke-width="2" style="flex-shrink:0;transform:rotate(180deg)"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <p style="font-size:16.5px;line-height:1.75;color:#5C626B;padding:0 0 24px;max-width:640px">Risikotillægget dækker den risiko vi bærer, når materiellet er ude af huset: skader, slitage ud over normal brug og bortkomst. Det er en fast del af prismodellen og aftales ikke fra sag til sag.</p>
+          </div>
+          <div style="border-bottom:1px solid #E5E2DB">
+            <button style="width:100%;display:flex;align-items:center;gap:16px;padding:20px 0;background:none;border:none;cursor:pointer;text-align:left;font-family:Barlow,sans-serif">
+              <span style="flex:1;font-size:17px;font-weight:600;color:#1B3A6B">Må jeg give rabat uden godkendelse?</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA1A9" stroke-width="2" style="flex-shrink:0"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+          </div>
+          <div style="border-bottom:1px solid #E5E2DB">
+            <button style="width:100%;display:flex;align-items:center;gap:16px;padding:20px 0;background:none;border:none;cursor:pointer;text-align:left;font-family:Barlow,sans-serif">
+              <span style="flex:1;font-size:17px;font-weight:600;color:#1B3A6B">Hvad gør jeg, hvis kunden spørger til miljøbidraget?</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA1A9" stroke-width="2" style="flex-shrink:0"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+          </div>
+          <div style="border-bottom:1px solid #E5E2DB">
+            <button style="width:100%;display:flex;align-items:center;gap:16px;padding:20px 0;background:none;border:none;cursor:pointer;text-align:left;font-family:Barlow,sans-serif">
+              <span style="flex:1;font-size:17px;font-weight:600;color:#1B3A6B">Hvordan sikrer jeg, at tilvalg kommer med på ordren?</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA1A9" stroke-width="2" style="flex-shrink:0"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top:72px;padding-top:40px;border-top:1px solid #E5E2DB">
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:#1B3A6B;margin-bottom:6px">Hvem kan hjælpe?</h2>
+        <p style="font-size:16.5px;color:#7A7F87;margin-bottom:22px">Ledelsesgruppen</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="border:1px solid #E5E2DB;border-radius:10px;background:#fff;padding:20px 22px">
+            <div style="font-size:17px;font-weight:600;color:#1B3A6B">Henrik Osbæck</div>
+            <div style="font-size:15px;color:#7A7F87;margin-bottom:12px">Udlejningsdirektør</div>
+            <a href="tel:+4528352897" style="display:block;font-size:15px;color:#3F4650;text-decoration:none">+45 28 35 28 97</a>
+            <a href="mailto:hob@stark.dk" style="display:block;font-size:15px;color:#3F4650;text-decoration:none">hob@stark.dk</a>
+          </div>
+          <div style="border:1px solid #E5E2DB;border-radius:10px;background:#fff;padding:20px 22px">
+            <div style="font-size:17px;font-weight:600;color:#1B3A6B">Jesper Kaack Kongsvad</div>
+            <div style="font-size:15px;color:#7A7F87;margin-bottom:12px">Relations- &amp; Projektleder</div>
+            <a href="tel:+4528437306" style="display:block;font-size:15px;color:#3F4650;text-decoration:none">+45 28 43 73 06</a>
+            <a href="mailto:jesper.kongsvad@stark.dk" style="display:block;font-size:15px;color:#3F4650;text-decoration:none">jesper.kongsvad@stark.dk</a>
+          </div>
+        </div>
+      </section>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:64px">
+        <a href="#" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:10px;background:#fff;padding:18px 22px" style-hover="border-color:#1B3A6B">
+          <div style="font-size:12.5px;color:#9CA1A9;margin-bottom:5px">← Forrige</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;color:#1B3A6B">Overblik</div>
+        </a>
+        <a href="#" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:10px;background:#fff;padding:18px 22px;text-align:right" style-hover="border-color:#1B3A6B">
+          <div style="font-size:12.5px;color:#9CA1A9;margin-bottom:5px">Næste →</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;color:#1B3A6B">Fakturakvalitet &amp; kreditnotaer</div>
+        </a>
+      </div>
+    </article>
+
+    <aside class="art-toc" style="width:212px;flex-shrink:0;position:sticky;top:144px">
+      <div style="font-size:11.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#9CA1A9;margin-bottom:14px">På denne side</div>
+      <div style="display:flex;flex-direction:column;border-left:1px solid #E5E2DB">
+        <a href="#paavirkning" style="padding:7px 0 7px 16px;margin-left:-1px;border-left:2px solid #E87722;text-decoration:none;font-size:14.5px;color:#E87722;font-weight:600">Hvad bruttoavancen påvirkes af</a>
+        <a href="#prislogik" style="padding:7px 0 7px 16px;text-decoration:none;font-size:14.5px;color:#7A7F87">Den faste prislogik</a>
+        <a href="#" style="padding:7px 0 7px 16px;text-decoration:none;font-size:14.5px;color:#7A7F87">Ofte stillede spørgsmål</a>
+      </div>
+      <a href="#" style="display:flex;align-items:center;gap:11px;margin-top:28px;padding:14px 16px;border:1px solid #E5E2DB;border-radius:10px;background:#fff;text-decoration:none" style-hover="border-color:#E87722">
+        <span style="width:30px;height:30px;border-radius:7px;background:#FFF4EA;color:#E87722;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path></svg>
+        </span>
+        <span style="font-size:13.5px;font-weight:600;color:#1B3A6B;line-height:1.35">Spørg AI-agenten<br><span style="font-weight:400;color:#9CA1A9;font-size:12.5px">Åbner i Teams</span></span>
+      </a>
+    </aside>
+  </main>
+</div>
+</sc-if>
+
+<!-- ══════════ DIAGRAM / SPEC ══════════ -->
+<sc-if value="{{ isSpec }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Diagrammer" style="background:#FBFAF9;min-height:calc(100vh - 88px)">
+  <main style="max-width:1180px;margin:0 auto;padding:56px 32px 120px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#9CA1A9;margin-bottom:20px">
+      <a href="#" style="text-decoration:none;color:#7A7F87">Skurvogne</a><span>/</span><span style="color:#3F4650">Diagrammer &amp; specifikationer</span>
+    </div>
+    <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:52px;line-height:1.05;letter-spacing:-0.5px;color:#1B3A6B;margin-bottom:18px">Diagrammer &amp; specifikationer</h1>
+    <p style="font-size:20px;line-height:1.6;color:#5C626B;max-width:640px;margin-bottom:36px">Mål og indretning på hver skurvognstype. Klik på et diagram for at se det i fuld størrelse.</p>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;padding-bottom:32px;border-bottom:1px solid #E5E2DB;margin-bottom:40px">
+      <button style="border:1px solid #1B3A6B;background:#1B3A6B;color:#fff;border-radius:999px;padding:8px 16px;font-family:Barlow,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer">Alle</button>
+      <button style="border:1px solid #E5E2DB;background:#fff;color:#3F4650;border-radius:999px;padding:8px 16px;font-family:Barlow,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="border-color:#1B3A6B">Kontor</button>
+      <button style="border:1px solid #E5E2DB;background:#fff;color:#3F4650;border-radius:999px;padding:8px 16px;font-family:Barlow,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="border-color:#1B3A6B">Mandskab</button>
+      <button style="border:1px solid #E5E2DB;background:#fff;color:#3F4650;border-radius:999px;padding:8px 16px;font-family:Barlow,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="border-color:#1B3A6B">Beboelse</button>
+      <button style="border:1px solid #E5E2DB;background:#fff;color:#3F4650;border-radius:999px;padding:8px 16px;font-family:Barlow,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="border-color:#1B3A6B">Bad &amp; køkken</button>
+    </div>
+
+    <div class="spec-split" style="display:grid;grid-template-columns:1.15fr 1fr;gap:40px;align-items:start;margin-bottom:64px">
+      <div style="border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden">
+        <div style="background:#F6F4F0;padding:20px;display:flex;align-items:center;justify-content:center;min-height:320px"><img src="images/copy-(1)-Kontor 1 diagram-250924.png" alt="Kontor 1 — diagram" style="max-width:100%;max-height:340px;object-fit:contain;cursor:zoom-in"></div>
+        <div style="padding:14px 20px;border-top:1px solid #EEEBE4;font-size:14px;color:#7A7F87">Kontor 1 — plantegning</div>
+      </div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:#1B3A6B;margin-bottom:20px">Kontor 1</div>
+        <div style="border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 20px;border-bottom:1px solid #F0EEE9;font-size:15.5px"><span style="color:#7A7F87">Længde</span><span style="font-weight:600;font-variant-numeric:tabular-nums">300 cm</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 20px;border-bottom:1px solid #F0EEE9;font-size:15.5px"><span style="color:#7A7F87">Bredde</span><span style="font-weight:600;font-variant-numeric:tabular-nums">240 cm</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 20px;border-bottom:1px solid #F0EEE9;font-size:15.5px"><span style="color:#7A7F87">Højde</span><span style="font-weight:600;font-variant-numeric:tabular-nums">295 cm</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 20px;border-bottom:1px solid #F0EEE9;font-size:15.5px"><span style="color:#7A7F87">Vægt</span><span style="font-weight:600;font-variant-numeric:tabular-nums">1.850 kg</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 20px;border-bottom:1px solid #F0EEE9;font-size:15.5px"><span style="color:#7A7F87">Arbejdspladser</span><span style="font-weight:600;font-variant-numeric:tabular-nums">1–2</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 20px;font-size:15.5px"><span style="color:#7A7F87">Strøm</span><span style="font-weight:600">230 V / 16 A</span></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <a href="#" style="flex:1;text-decoration:none;text-align:center;border:1px solid #E5E2DB;border-radius:8px;background:#fff;padding:11px 16px;font-size:14px;font-weight:600;color:#1B3A6B" style-hover="border-color:#1B3A6B">Hent PDF</a>
+          <a href="#" style="flex:1;text-decoration:none;text-align:center;border:1px solid #E5E2DB;border-radius:8px;background:#fff;padding:11px 16px;font-size:14px;font-weight:600;color:#1B3A6B" style-hover="border-color:#1B3A6B">Se i Nethire</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:28px;color:#1B3A6B;margin-bottom:22px">Øvrige typer</div>
+    <div class="thumb-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <a href="#" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;display:block" style-hover="border-color:#1B3A6B">
+        <div style="background:#F6F4F0;height:170px;display:flex;align-items:center;justify-content:center;padding:14px"><img src="images/copy-(1)-Kontor 2 diagram-616281.png" alt="Kontor 2" style="max-width:100%;max-height:100%;object-fit:contain"></div>
+        <div style="padding:14px 16px;border-top:1px solid #EEEBE4">
+          <div style="font-size:15.5px;font-weight:600;color:#1B3A6B">Kontor 2</div>
+          <div style="font-size:13.5px;color:#9CA1A9;margin-top:2px">600 × 240 cm</div>
+        </div>
+      </a>
+      <a href="#" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;display:block" style-hover="border-color:#1B3A6B">
+        <div style="background:#F6F4F0;height:170px;display:flex;align-items:center;justify-content:center;padding:14px"><img src="images/copy-(1)-Mandskab 6 diagram-212508.png" alt="Mandskab 6" style="max-width:100%;max-height:100%;object-fit:contain"></div>
+        <div style="padding:14px 16px;border-top:1px solid #EEEBE4">
+          <div style="font-size:15.5px;font-weight:600;color:#1B3A6B">Mandskab 6</div>
+          <div style="font-size:13.5px;color:#9CA1A9;margin-top:2px">600 × 240 cm</div>
+        </div>
+      </a>
+      <a href="#" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;display:block" style-hover="border-color:#1B3A6B">
+        <div style="background:#F6F4F0;height:170px;display:flex;align-items:center;justify-content:center;padding:14px"><img src="images/copy-(1)-Beboelse 4 pax diagram-123444.png" alt="Beboelse 4 pax" style="max-width:100%;max-height:100%;object-fit:contain"></div>
+        <div style="padding:14px 16px;border-top:1px solid #EEEBE4">
+          <div style="font-size:15.5px;font-weight:600;color:#1B3A6B">Beboelse 4 pax</div>
+          <div style="font-size:13.5px;color:#9CA1A9;margin-top:2px">600 × 300 cm</div>
+        </div>
+      </a>
+      <a href="#" style="text-decoration:none;border:1px solid #E5E2DB;border-radius:12px;background:#fff;overflow:hidden;display:block" style-hover="border-color:#1B3A6B">
+        <div style="background:#F6F4F0;height:170px;display:flex;align-items:center;justify-content:center;padding:14px"><img src="images/copy-(1)-Køkken diagram-404870.png" alt="Køkken" style="max-width:100%;max-height:100%;object-fit:contain"></div>
+        <div style="padding:14px 16px;border-top:1px solid #EEEBE4">
+          <div style="font-size:15.5px;font-weight:600;color:#1B3A6B">Køkken</div>
+          <div style="font-size:13.5px;color:#9CA1A9;margin-top:2px">600 × 240 cm</div>
+        </div>
+      </a>
+    </div>
+  </main>
+</div>
+</sc-if>
+
+<!-- ══════════ SØGNING ══════════ -->
+<sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Søgning" style="position:relative;background:#FBFAF9;min-height:calc(100vh - 88px)">
+  <div style="position:absolute;inset:0;background:rgba(20,25,35,0.42)"></div>
+  <div style="position:relative;z-index:2;max-width:760px;margin:0 auto;padding:56px 24px 80px">
+    <div style="background:#fff;border:1px solid #E5E2DB;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(20,25,35,0.18)">
+      <div style="display:flex;align-items:center;gap:14px;padding:20px 24px;border-bottom:1px solid #EEEBE4">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1B3A6B" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span style="flex:1;font-size:19px;color:#1A1D21">risikotillæg<span style="color:#E87722">|</span></span>
+        <button onClick="{{ go0 }}" style="border:1px solid #E5E2DB;background:none;border-radius:5px;padding:3px 8px;font-family:Barlow,sans-serif;font-size:11.5px;font-weight:600;color:#9CA1A9;cursor:pointer">esc</button>
+      </div>
+      <div style="display:flex;gap:7px;padding:14px 24px;border-bottom:1px solid #EEEBE4;flex-wrap:wrap">
+        <button style="border:1px solid #1B3A6B;background:#1B3A6B;color:#fff;border-radius:999px;padding:6px 13px;font-family:Barlow,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer">Alt</button>
+        <button style="border:1px solid #E5E2DB;background:none;color:#5C626B;border-radius:999px;padding:6px 13px;font-family:Barlow,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer">Økonomi</button>
+        <button style="border:1px solid #E5E2DB;background:none;color:#5C626B;border-radius:999px;padding:6px 13px;font-family:Barlow,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer">Lifte</button>
+        <button style="border:1px solid #E5E2DB;background:none;color:#5C626B;border-radius:999px;padding:6px 13px;font-family:Barlow,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer">Skurvogne</button>
+        <button style="border:1px solid #E5E2DB;background:none;color:#5C626B;border-radius:999px;padding:6px 13px;font-family:Barlow,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer">Kun FAQ</button>
+      </div>
+      <div style="max-height:none">
+        <div style="padding:16px 24px 8px;font-size:11.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#9CA1A9">Sider · 3</div>
+        <a href="#" onClick="{{ go1 }}" style="display:flex;gap:16px;align-items:flex-start;padding:14px 24px;text-decoration:none;background:#FFF9F3;border-left:2px solid #E87722">
+          <div style="flex:1">
+            <div style="font-size:16.5px;font-weight:600;color:#1B3A6B;margin-bottom:3px">Bruttoavance</div>
+            <div style="font-size:14.5px;color:#7A7F87;line-height:1.55">…listepris → rabat → + <mark style="background:#FFE6CC;color:#1B3A6B;border-radius:2px">risikotillæg</mark> (6,5 %) → + miljøbidrag (3,5 %) = kundepris total…</div>
+          </div>
+          <div style="font-size:12.5px;color:#9CA1A9;white-space:nowrap;padding-top:2px">Økonomi</div>
+        </a>
+        <a href="#" style="display:flex;gap:16px;align-items:flex-start;padding:14px 24px;text-decoration:none;border-left:2px solid transparent">
+          <div style="flex:1">
+            <div style="font-size:16.5px;font-weight:600;color:#1B3A6B;margin-bottom:3px">Fakturakvalitet &amp; kreditnotaer</div>
+            <div style="font-size:14.5px;color:#7A7F87;line-height:1.55">…fejl i <mark style="background:#FFE6CC;color:#1B3A6B;border-radius:2px">risikotillæg</mark> er en hyppig årsag til kreditnotaer på ordren…</div>
+          </div>
+          <div style="font-size:12.5px;color:#9CA1A9;white-space:nowrap;padding-top:2px">Økonomi</div>
+        </a>
+        <a href="#" style="display:flex;gap:16px;align-items:flex-start;padding:14px 24px;text-decoration:none;border-left:2px solid transparent">
+          <div style="flex:1">
+            <div style="font-size:16.5px;font-weight:600;color:#1B3A6B;margin-bottom:3px">Overblik — Økonomi</div>
+            <div style="font-size:14.5px;color:#7A7F87;line-height:1.55">…de faste tillæg: <mark style="background:#FFE6CC;color:#1B3A6B;border-radius:2px">risikotillæg</mark> og miljøbidrag lægges altid oven på kundeprisen…</div>
+          </div>
+          <div style="font-size:12.5px;color:#9CA1A9;white-space:nowrap;padding-top:2px">Økonomi</div>
+        </a>
+        <div style="padding:18px 24px 8px;font-size:11.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#9CA1A9;border-top:1px solid #F0EEE9">Spørgsmål · 2</div>
+        <a href="#" style="display:flex;gap:16px;align-items:flex-start;padding:14px 24px;text-decoration:none;border-left:2px solid transparent">
+          <div style="flex:1">
+            <div style="font-size:16.5px;font-weight:600;color:#1B3A6B">Hvorfor er <mark style="background:#FFE6CC;color:#1B3A6B;border-radius:2px">risikotillægget</mark> på 6,5 %?</div>
+          </div>
+          <div style="font-size:12.5px;color:#9CA1A9;white-space:nowrap;padding-top:2px">FAQ</div>
+        </a>
+        <a href="#" style="display:flex;gap:16px;align-items:flex-start;padding:14px 24px 18px;text-decoration:none;border-left:2px solid transparent">
+          <div style="flex:1">
+            <div style="font-size:16.5px;font-weight:600;color:#1B3A6B">Skal <mark style="background:#FFE6CC;color:#1B3A6B;border-radius:2px">risikotillæg</mark> med på tilvalg?</div>
+          </div>
+          <div style="font-size:12.5px;color:#9CA1A9;white-space:nowrap;padding-top:2px">FAQ</div>
+        </a>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px;padding:12px 24px;border-top:1px solid #EEEBE4;background:#FBFAF9;font-size:12.5px;color:#9CA1A9">
+        <span><strong style="font-weight:600;color:#5C626B">↑↓</strong> naviger</span>
+        <span><strong style="font-weight:600;color:#5C626B">↵</strong> åbn</span>
+        <span><strong style="font-weight:600;color:#5C626B">⌘K</strong> luk</span>
+        <span style="margin-left:auto">5 resultater</span>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- ══════════ MOBIL ══════════ -->
+<sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Mobil" style="background:#F2F0EB;min-height:100vh;display:flex;justify-content:center;padding:48px 24px 110px">
+  <div style="width:390px;background:#FBFAF9;border:1px solid #DFDCD5;border-radius:24px;overflow:hidden">
+    <div style="height:72px;background:#1B3A6B;display:flex;align-items:center;padding:0 16px;gap:14px">
+      <button style="width:34px;height:34px;border:none;border-radius:7px;background:rgba(255,255,255,0.10);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+      <img src="https://stark-udlejning.netlify.app/top_logo.png" alt="STARK Udlejning" style="width:200px;height:auto;display:block">
+    </div>
+    <div style="padding:22px 18px 26px">
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:34px;line-height:1.05;color:#1B3A6B;margin-bottom:16px">Udlejning<br>Akademiet</h1>
+      <button style="width:100%;display:flex;align-items:center;gap:11px;padding:15px 16px;border:1px solid #E5E2DB;border-radius:10px;background:#fff;cursor:pointer;font-family:Barlow,sans-serif;text-align:left">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1B3A6B" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span style="font-size:16px;color:#8A8F97">Søg i Akademiet</span>
+      </button>
+      <div style="display:flex;gap:7px;margin-top:12px;flex-wrap:wrap">
+        <a href="#" style="text-decoration:none;font-size:13px;font-weight:500;color:#3F4650;border:1px solid #E5E2DB;border-radius:999px;padding:6px 12px;background:#fff">Risikotillæg</a>
+        <a href="#" style="text-decoration:none;font-size:13px;font-weight:500;color:#3F4650;border:1px solid #E5E2DB;border-radius:999px;padding:6px 12px;background:#fff">Skurvognsmål</a>
+        <a href="#" style="text-decoration:none;font-size:13px;font-weight:500;color:#3F4650;border:1px solid #E5E2DB;border-radius:999px;padding:6px 12px;background:#fff">Nethire</a>
+      </div>
+
+      <div style="margin-top:26px;border:1px solid #E5E2DB;border-radius:12px;background:#fff;padding:18px 18px 16px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;color:#1B3A6B">Kom godt i gang</div>
+          <div style="font-size:12.5px;font-weight:600;color:#7A7F87">2/5</div>
+        </div>
+        <div style="height:3px;background:#EEEBE4;border-radius:2px;margin-bottom:16px"><div style="width:40%;height:3px;background:#E87722;border-radius:2px"></div></div>
+        <a href="#" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #E87722;flex-shrink:0"></span>
+          <span style="flex:1;font-size:15.5px;font-weight:600;color:#1B3A6B">Nethire &amp; systemer</span>
+          <span style="font-size:12.5px;font-weight:600;color:#E87722">Fortsæt →</span>
+        </a>
+      </div>
+
+      <div style="font-size:11.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#9CA1A9;margin:28px 0 12px">Alle emner</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <a href="#" style="display:flex;align-items:center;gap:14px;text-decoration:none;border:1px solid #E5E2DB;border-radius:10px;background:#fff;padding:12px 14px">
+          <span style="width:52px;height:44px;border-radius:6px;background:#F2F0EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden"><img src="images/500905565-IMG_4852.JPG" alt="" style="width:100%;height:100%;object-fit:cover"></span>
+          <span style="flex:1"><span style="display:block;font-size:16.5px;font-weight:600;color:#1B3A6B">Lifte</span><span style="display:block;font-size:13px;color:#9CA1A9">5 sider</span></span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C9C6BF" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+        <a href="#" style="display:flex;align-items:center;gap:14px;text-decoration:none;border:1px solid #E5E2DB;border-radius:10px;background:#fff;padding:12px 14px">
+          <span style="width:52px;height:44px;border-radius:6px;background:#F2F0EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden"><img src="images/anlaegsmaskiner-dumper.png" alt="" style="width:100%;height:100%;object-fit:cover"></span>
+          <span style="flex:1"><span style="display:block;font-size:16.5px;font-weight:600;color:#1B3A6B">Anlægsmaskiner</span><span style="display:block;font-size:13px;color:#9CA1A9">5 sider</span></span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C9C6BF" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+        <a href="#" style="display:flex;align-items:center;gap:14px;text-decoration:none;border:1px solid #E5E2DB;border-radius:10px;background:#fff;padding:12px 14px">
+          <span style="width:52px;height:44px;border-radius:6px;background:#F2F0EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden"><img src="images/1503388982-IMG_0945.JPG" alt="" style="width:100%;height:100%;object-fit:cover"></span>
+          <span style="flex:1"><span style="display:block;font-size:16.5px;font-weight:600;color:#1B3A6B">Skurvogne</span><span style="display:block;font-size:13px;color:#9CA1A9">4 sider</span></span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C9C6BF" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+        <a href="#" style="display:flex;align-items:center;gap:14px;text-decoration:none;border:1px solid #E5E2DB;border-radius:10px;background:#fff;padding:12px 14px">
+          <span style="width:52px;height:44px;border-radius:6px;background:#F2F0EB;color:#1B3A6B;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+          </span>
+          <span style="flex:1"><span style="display:block;font-size:16.5px;font-weight:600;color:#1B3A6B">Ny med udlejning</span><span style="display:block;font-size:13px;color:#9CA1A9">5 sider</span></span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C9C6BF" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+        <a href="#" style="display:flex;align-items:center;gap:14px;text-decoration:none;border:1px solid #E5E2DB;border-radius:10px;background:#fff;padding:12px 14px">
+          <span style="width:52px;height:44px;border-radius:6px;background:#F2F0EB;color:#1B3A6B;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="20" x2="20" y2="20"></line><rect x="6" y="12" width="3" height="8"></rect><rect x="11" y="7" width="3" height="13"></rect><rect x="16" y="3" width="3" height="17"></rect></svg>
+          </span>
+          <span style="flex:1"><span style="display:block;font-size:16.5px;font-weight:600;color:#1B3A6B">Økonomi</span><span style="display:block;font-size:13px;color:#9CA1A9">5 sider</span></span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C9C6BF" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { screen: 'home' };
+  renderVals() {
+    const s = this.state.screen;
+    const on = '#1B3A6B', onF = '#fff', off = 'transparent', offF = '#5C626B';
+    const set = (n) => () => this.setState({ screen: n });
+    return {
+      isHome: s === 'home', isArticle: s === 'article', isSpec: s === 'spec',
+      isSearch: s === 'search', isMobile: s === 'mobile', notMobile: s !== 'mobile',
+      go0: set('home'), go1: set('article'), go2: set('spec'), go3: set('search'), go4: set('mobile'),
+      b0: s === 'home' ? on : off, f0: s === 'home' ? onF : offF,
+      b1: s === 'article' ? on : off, f1: s === 'article' ? onF : offF,
+      b2: s === 'spec' ? on : off, f2: s === 'spec' ? onF : offF,
+      b3: s === 'search' ? on : off, f3: s === 'search' ? onF : offF,
+      b4: s === 'mobile' ? on : off, f4: s === 'mobile' ? onF : offF
+    };
+  }
+}
+</script>
+</body>
+</html>
