@@ -251,7 +251,7 @@ a.cta-block::after { content: none !important; }
 .person-card a:hover { color: var(--orange); }
 
 /* FAQ */
-.faq-section { margin-top: 72px; }
+.faq-section { margin-top: 72px; scroll-margin-top: calc(var(--header-h) + 24px); }
 .faq-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
 .faq-heading { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 30px; color: var(--navy); }
 .faq-sub { font-size: 15px; color: var(--muted); margin-top: 2px; }
@@ -888,7 +888,7 @@ function renderPage(catId, slug) {
     </div>
     ${renderFooter()}`;
 
-  buildToc(faqs.length);
+  buildToc(faqs.length, catId, slug);
   window.scrollTo(0, 0);
   pushRecent(page.id);
   markDone(cat.id, slug);
@@ -908,7 +908,7 @@ function onFavClick(id) {
 
 /* Indholdsfortegnelse i siden */
 let tocObserver = null;
-function buildToc(faqCount) {
+function buildToc(faqCount, catId, slug) {
   const root = document.getElementById('tocRoot');
   const prose = document.getElementById('proseRoot');
   if (!root || !prose) return;
@@ -918,11 +918,12 @@ function buildToc(faqCount) {
   const items = h2s.length >= 4 ? h2s : heads;
   if (items.length < 2 && !faqCount) { root.innerHTML = ''; return; }
 
+  const base = `#/${catId}/${slug}`;
   root.innerHTML = `
     <div class="toc-label">På denne side</div>
     <div class="toc-list">
-      ${items.map(h => `<a href="#${h.id}" data-toc="${h.id}">${escapeHtml(h.textContent)}</a>`).join('')}
-      ${faqCount ? `<a href="#faq" data-toc="faq">Ofte stillede spørgsmål</a>` : ''}
+      ${items.map(h => `<a href="${base}/${h.id}" data-toc="${h.id}">${escapeHtml(h.textContent)}</a>`).join('')}
+      ${faqCount ? `<a href="${base}/faq" data-toc="faq">Ofte stillede spørgsmål</a>` : ''}
     </div>
     <a class="toc-ai" href="https://teams.microsoft.com/l/chat/19:76323146-c27e-417f-aacb-79769dc1c994_2293867d-93c1-453b-8a53-60186a402a1c%40unq.gbl.spaces/conversations?context=%7b%22contextType%22:%22chat%22%7d" target="_blank" rel="noopener">
       <span class="i">${CHAT_ICON}</span>
@@ -971,7 +972,16 @@ function router() {
     return;
   }
   const parts = hash.split('/').filter(Boolean);
-  if (parts.length >= 2) renderPage(parts[0], parts[1]); else renderNotFound();
+  if (parts.length >= 2) {
+    renderPage(parts[0], parts[1]);
+    if (parts[2]) {
+      const anchor = decodeURIComponent(parts[2]);
+      setTimeout(() => {
+        const target = document.getElementById(anchor);
+        if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }, 0);
+    }
+  } else renderNotFound();
 }
 
 /* ═══════════ SØGNING ═══════════ */
@@ -1163,6 +1173,16 @@ async function init() {
   document.getElementById('burgerBtn').addEventListener('click', openSidebarMobile);
   document.getElementById('sidebarOverlay').addEventListener('click', closeSidebarMobile);
   document.getElementById('navTopics').addEventListener('click', e => { e.preventDefault(); location.hash = '#/'; setTimeout(() => { const el = document.querySelector('.home-cats'); if (el) window.scrollTo({ top: el.offsetTop - 100, behavior: 'smooth' }); }, 60); });
+  document.addEventListener('click', e => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest('.toc-list a[data-toc]');
+    if (!a) return;
+    const target = document.getElementById(a.dataset.toc);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    history.replaceState(null, '', a.getAttribute('href'));
+  });
 }
 init();
 </script>
