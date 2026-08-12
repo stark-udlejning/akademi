@@ -209,6 +209,14 @@ a.cta-block::after { content: none !important; }
 .cta-sub { display: block; font-size: 13px; color: var(--muted-2); margin-top: 1px; }
 .cta-arrow { flex-shrink: 0; color: var(--muted-2); display: flex; }
 
+/* Fast henvisning til Toolbox + Den lille hjælper */
+.help-block { border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 10px; background: var(--card); padding: 20px 22px 6px; margin: 0 0 28px; }
+.help-title { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
+.help-text { font-size: 16px; line-height: 1.6; color: var(--ink-2); margin: 0 0 16px; }
+.help-links { display: grid; gap: 10px; }
+.help-links a.cta-block { margin: 0 0 14px; }
+.ext-note { font-size: 15px; line-height: 1.6; color: var(--muted-2); border-top: 1px solid var(--line); margin-top: 14px; padding-top: 12px; }
+
 /* Udforsk emnet */
 .section-nav { margin: 0 0 40px; }
 .section-nav-label { font-size: 11.5px; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted-2); margin-bottom: 14px; }
@@ -485,6 +493,11 @@ const ARROW_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" 
 const IMG_ICON = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
 const SEARCH_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
 
+/* Faste henvisninger — bruges alle steder i stedet for enkelte (og ofte døde) eksterne links */
+const TOOLBOX_URL = 'https://starkworkspace.sharepoint.com/sites/Koncepter-services/SitePages/Udlejning---Hovedsiden.aspx';
+const HELPER_URL = 'https://teams.microsoft.com/l/app/f6405520-7907-4464-8f6e-9889e2fb7d8f?source=app-bar-share-entrypoint&templateInstanceId=90f7357b-2933-4333-aae0-ad470fc1e310&environment=27633bb4-face-e83b-b1bb-22475f2d5145';
+const HELPER_NAME = 'Den lille hjælper';
+
 /* Kategoribilleder — filnavne som de ligger i /images */
 const CAT_IMAGE = {
   'lifte': 'images/500905565-IMG_4852.JPG',
@@ -745,6 +758,7 @@ function renderBlock(b) {
       <span class="cta-arrow">${ARROW_ICON}</span>
     </a>`;
   }
+  if (b.type === 'help') return renderHelpBlock();
   if (b.type === 'person-group') {
     return `<div class="person-group">
       ${b.heading ? `<div class="person-group-heading">${escapeHtml(b.heading)}</div>` : ''}
@@ -752,6 +766,31 @@ function renderBlock(b) {
     </div>`;
   }
   return '';
+}
+/* Fast henvisningsboks — samme tekst og links på alle sider */
+function renderHelpBlock() {
+  return `<div class="help-block">
+    <div class="help-title">Mere information</div>
+    <p class="help-text">Mere information finder du på <strong>Toolbox</strong> — og du kan altid spørge vores AI-robot <strong>${escapeHtml(HELPER_NAME)}</strong>.</p>
+    <div class="help-links">
+      <a class="cta-block" href="${escapeHtml(TOOLBOX_URL)}" target="_blank" rel="noopener">
+        <span class="cta-icon">${LINK_ICON}</span>
+        <span class="cta-text">
+          <span class="cta-label">Toolbox — STARK Udlejning</span>
+          <span class="cta-sub">Åbner på Toolbox</span>
+        </span>
+        <span class="cta-arrow">${ARROW_ICON}</span>
+      </a>
+      <a class="cta-block" href="${escapeHtml(HELPER_URL)}" target="_blank" rel="noopener">
+        <span class="cta-icon">${CHAT_ICON}</span>
+        <span class="cta-text">
+          <span class="cta-label">Spørg ${escapeHtml(HELPER_NAME)}</span>
+          <span class="cta-sub">Åbner i Teams</span>
+        </span>
+        <span class="cta-arrow">${ARROW_ICON}</span>
+      </a>
+    </div>
+  </div>`;
 }
 function niceFileLabel(fn) {
   const name = fn.replace(/\.[a-z0-9]+$/i, '').replace(/-/g, ' ');
@@ -925,9 +964,9 @@ function buildToc(faqCount, catId, slug) {
       ${items.map(h => `<a href="${base}/${h.id}" data-toc="${h.id}">${escapeHtml(h.textContent)}</a>`).join('')}
       ${faqCount ? `<a href="${base}/faq" data-toc="faq">Ofte stillede spørgsmål</a>` : ''}
     </div>
-    <a class="toc-ai" href="https://teams.microsoft.com/l/chat/19:76323146-c27e-417f-aacb-79769dc1c994_2293867d-93c1-453b-8a53-60186a402a1c%40unq.gbl.spaces/conversations?context=%7b%22contextType%22:%22chat%22%7d" target="_blank" rel="noopener">
+    <a class="toc-ai" href="${escapeHtml(HELPER_URL)}" target="_blank" rel="noopener">
       <span class="i">${CHAT_ICON}</span>
-      <span class="t">Spørg AI-agenten<small>Åbner i Teams</small></span>
+      <span class="t">Spørg ${escapeHtml(HELPER_NAME)}<small>Åbner i Teams</small></span>
     </a>`;
 
   const faqSection = document.querySelector('.faq-section');
