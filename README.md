@@ -73,12 +73,17 @@ Alle links i indholdet er nu tjekket og rettet:
 - **Links til andre Akademi-sider** (fx "se sikkerhedsvejledningerne") peger nu
   internt på den rigtige side i sitet (`#/kategori/side`) i stedet for på en
   død SharePoint-URL.
-- **Links til andre dele af SharePoint** (dokumenter, andre sites, guides)
-  peger nu på den fulde adresse (`starkworkspace.sharepoint.com/...`) og åbner
-  i et nyt faneblad — de kræver stadig jeres SharePoint-login, som forventet,
-  men virker nu i stedet for at være døde relative links.
-- **Eksterne links** (Teams AI-agent, forms.office.com, Eloomi, stark.dk) åbner
-  også i nyt faneblad, markeret med et lille ↗-ikon.
+- **Dybe SharePoint-links** (enkelte dokumenter, undersider og guides) er
+  fjernet, fordi de løbende bliver døde. I stedet står der ét fast sted at gå
+  hen: **Toolbox** (hovedsiden for Udlejning) og AI-robotten
+  **"Den lille hjælper"** i Teams. Navnet på dokumentet/siden er bevaret i
+  teksten, så man stadig ved, hvad man skal lede efter.
+- Henvisningen står som en fast boks på alle 25 sider og som en kort note i
+  bunden af de FAQ-svar, der tidligere havde et dybt SharePoint-link.
+- De to URL'er styres ét sted i `index.html` (`TOOLBOX_URL` og `HELPER_URL`),
+  så de kun skal rettes ét sted, hvis de ændrer sig.
+- **Øvrige eksterne links** (forms.office.com, Eloomi, stark.dk) åbner
+  fortsat i nyt faneblad, markeret med et lille ↗-ikon.
 - **Mailto-links** er urørt.
 
 Hver kategoris **Overblik-side** har desuden fået en ny "Udforsk emnet"-sektion
@@ -100,7 +105,7 @@ nettopriser-skabelonen og det interne prisværktøj):
 - Live søgning på tværs af alt indhold (titler, brødtekst, spec-tabeller, FAQ)
 - FAQ-accordions pr. side
 - Forrige/næste-navigation i bunden af hver side
-- Links til andre Akademi-sider peger internt; øvrige SharePoint-links peger korrekt eksternt
+- Links til andre Akademi-sider peger internt; eksterne henvisninger samles ét sted (Toolbox + "Den lille hjælper")
 - Fuldt responsivt, ingen build-proces, ingen eksterne dependencies udover fonte
 
 ## Testet
