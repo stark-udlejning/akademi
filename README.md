@@ -1,4 +1,4 @@
-# STARK Udlejning Akademiet
+# STARK Udlejning CODEX
 
 Standalone, moderne udgave af jeres SharePoint-akademi, klar til Netlify/GitHub.
 
@@ -70,7 +70,7 @@ punkt til en liste) uden at skulle røre `index.html`. Strukturen er:
 
 Alle links i indholdet er nu tjekket og rettet:
 
-- **Links til andre Akademi-sider** (fx "se sikkerhedsvejledningerne") peger nu
+- **Links til andre CODEX-sider** (fx "se sikkerhedsvejledningerne") peger nu
   internt på den rigtige side i sitet (`#/kategori/side`) i stedet for på en
   død SharePoint-URL.
 - **Dybe SharePoint-links** (enkelte dokumenter, undersider og guides) er
@@ -105,7 +105,7 @@ nettopriser-skabelonen og det interne prisværktøj):
 - Live søgning på tværs af alt indhold (titler, brødtekst, spec-tabeller, FAQ)
 - FAQ-accordions pr. side
 - Forrige/næste-navigation i bunden af hver side
-- Links til andre Akademi-sider peger internt; eksterne henvisninger samles ét sted (Toolbox + "Den lille hjælper")
+- Links til andre CODEX-sider peger internt; eksterne henvisninger samles ét sted (Toolbox + "Den lille hjælper")
 - Fuldt responsivt, ingen build-proces, ingen eksterne dependencies udover fonte
 
 ## Testet

@@ -1,4 +1,4 @@
-# Billed-tjekliste — STARK Udlejning Akademiet
+# Billed-tjekliste — STARK Udlejning CODEX
 
 Sitet bruger nu **de originale SharePoint-filnavne** — så du kan downloade
 billedet direkte fra SiteAssets og lægge det i `/images/` uden at omdøbe noget.
@@ -104,13 +104,13 @@ indhold** (maskinfotos, diagrammer, lastdiagrammer osv.).
 
 | # | Filnavn (som på SharePoint — læg i /images/) | Kontekst på siden |
 |---|---|---|
-| 1 | `copy-(1)-Kassevogn1-597135.jpg` | Velkommen til STARK Udlejning Akademiet |
-| 2 | `3981227584-Airtox2.png` | Velkommen til STARK Udlejning Akademiet |
-| 3 | `500905565-IMG_4852.JPG` | Velkommen til STARK Udlejning Akademiet |
-| 4 | `1503388982-IMG_0945.JPG` | Velkommen til STARK Udlejning Akademiet |
-| 5 | `copy-(1)-Hoodie1-627380.png` | Velkommen til STARK Udlejning Akademiet |
-| 6 | `2431453235-Wacker-Neuson-WL300e.jpg` | Velkommen til STARK Udlejning Akademiet |
-| 7 | `2982427630-81a1aa43-f4fe-46fb-b64c-bae836834548.png` | Velkommen til STARK Udlejning Akademiet |
+| 1 | `copy-(1)-Kassevogn1-597135.jpg` | Velkommen til STARK Udlejning CODEX |
+| 2 | `3981227584-Airtox2.png` | Velkommen til STARK Udlejning CODEX |
+| 3 | `500905565-IMG_4852.JPG` | Velkommen til STARK Udlejning CODEX |
+| 4 | `1503388982-IMG_0945.JPG` | Velkommen til STARK Udlejning CODEX |
+| 5 | `copy-(1)-Hoodie1-627380.png` | Velkommen til STARK Udlejning CODEX |
+| 6 | `2431453235-Wacker-Neuson-WL300e.jpg` | Velkommen til STARK Udlejning CODEX |
+| 7 | `2982427630-81a1aa43-f4fe-46fb-b64c-bae836834548.png` | Velkommen til STARK Udlejning CODEX |
 
 
 ---
